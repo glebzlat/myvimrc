@@ -19,12 +19,15 @@ opt.number = true           -- Line number
 opt.relativenumber = true
 opt.autoindent = true
 opt.ruler = true
-opt.wrap = false            -- Long lines
+opt.wrap = false            -- Wrap long lines
+-- opt.linebreak = true     -- Break long lines
+-- opt.showbreak = '=> '
 opt.expandtab = true
 opt.tabstop = 4             --1 tab = 4 пробела
 opt.shiftwidth = 4          --Смещаем на 4 пробела
 opt.softtabstop = 2
 opt.smartindent = true
+opt.foldcolumn = 'auto:9'
 
 vim.g.tagbar_compact = 1
 
