@@ -9,6 +9,8 @@ Plug 'sakhnik/nvim-gdb', {'do': ':!./install.sh'}
 Plug 'vim-airline/vim-airline'
 Plug 'gpanders/editorconfig.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'crispgm/nvim-tabline'
+Plug 'numToStr/Comment.nvim'
 
 " lsps, syntax highlighting, formatting, completion, etc
 Plug 'neovim/nvim-lspconfig'

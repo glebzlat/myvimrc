@@ -49,9 +49,18 @@ vim.cmd [[ colorscheme elflord ]]
 -------------------------------------------------------------------------------
 
 -- Vim-Airline
-gvar('airline#extensions#tabline#enabled', '1') -- Tabline
-gvar('airline#extensions#tabline#formatter', 'unique_tail') -- Tabline style
+-- gvar('airline#extensions#tabline#enabled', '1') -- Tabline
+-- gvar('airline#extensions#tabline#formatter', 'unique_tail') -- Tabline style
 gvar('airline_highlighting_cache', '1') -- Enable caching
+
+SafeRequire('tabline', function(tabline)
+  tabline.setup {
+    show_index = true,
+    show_modify = true,
+    modify_indicator = '[+]',
+    no_name = '[No name]'
+  }
+end)
 
 SafeRequire('trouble', function(trouble)
   trouble.setup {
@@ -75,6 +84,10 @@ SafeRequire('indent_blankline', function(indent_blankline)
     show_current_context = true,
     show_current_context_start = true,
   }
+end)
+
+SafeRequire('Comment', function(comment)
+  comment.setup()
 end)
 
 -- NvimGDB

@@ -16,6 +16,21 @@ map('n', '<space>', ':NERDTreeToggle<CR>', default_st)
 map('', '<leader>f', '<Cmd>NERDTreeFocus<cr>', default_st)
 map('n', '<leader>rr', '<Cmd>NERDTreeRefreshRoot<cr>', default_st)
 
+map('n', '<leader>l', '<cmd>tabnext<cr>', default_st)
+map('n', '<leader>k', '<cmd>tabprevious<cr>', default_st)
+map('n', '<leader>c', '<cmd>tabclose<cr>', default_st)
+map('n', '<leader>n', '<cmd>tabnew<cr>', default_st)
+map('n', '<leader>1', '1gt', default_st)
+map('n', '<leader>2', '2gt', default_st)
+map('n', '<leader>3', '3gt', default_st)
+map('n', '<leader>4', '4gt', default_st)
+map('n', '<leader>5', '5gt', default_st)
+map('n', '<leader>6', '6gt', default_st)
+map('n', '<leader>7', '7gt', default_st)
+map('n', '<leader>8', '8gt', default_st)
+map('n', '<leader>9', '9gt', default_st)
+map('n', '<leader>0', '<cmd>tablast<cr>', default_st)
+
 -- Floaterm
 map('n', '<leader>t', '<cmd>FloatermNew<cr>', default_st)
 
