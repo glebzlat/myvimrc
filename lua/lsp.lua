@@ -92,7 +92,7 @@ lspconfig.clangd.setup {
 -- Lua
 lspconfig.sumneko_lua.setup {
   capabilities = capabilities,
-  on_attach = on_attach_format,
+  on_attach = on_attach,
   flags = lsp_flags,
   settings = {
     Lua = {

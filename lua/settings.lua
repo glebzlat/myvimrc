@@ -1,38 +1,43 @@
 local opt = vim.opt
 local gvar = vim.api.nvim_set_var
 
-opt.mouse = 'a' --Включит мышь
-opt.encoding = 'utf-8' --Кодировка
-opt.showcmd = true --Отображение команд
+opt.mouse = 'a'
+opt.encoding = 'utf-8'
+opt.showcmd = true
 vim.cmd([[
 filetype indent plugin on
 syntax enable
 ]])
 gvar('mapleader', ';')
 
+vim.o.matchpairs = "(:),{:},[:],<:>"
+
 opt.cursorline = true
-opt.number = true -- Line number
+opt.number = true           -- Line number
 opt.relativenumber = true
 opt.autoindent = true
 opt.ruler = true
-opt.wrap = false -- long lines
+opt.wrap = false            -- Long lines
 opt.expandtab = true
-opt.tabstop = 4 --1 tab = 4 пробела
-opt.shiftwidth = 4 --Смещаем на 4 пробела
+opt.tabstop = 4             --1 tab = 4 пробела
+opt.shiftwidth = 4          --Смещаем на 4 пробела
 opt.softtabstop = 2
 opt.smartindent = true
+
+vim.g.tagbar_compact = 1
 
 -- 2 spaces for selected filetypes
 vim.cmd [[
 autocmd FileType cpp,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
 ]]
 
-opt.so = 5 --Отступ курсора от края экрана
-opt.foldcolumn = '2' --Ширина колонки для фолдов
+opt.so = 5                  --Отступ курсора от края экрана
+opt.foldcolumn = '2'        --Ширина колонки для фолдов
 opt.colorcolumn = '80'
 
 -- Colorscheme
 vim.cmd [[ colorscheme elflord ]]
+-- vim.cmd [[ colorscheme default ]]
 
 -------------------------------------------------------------------------------
 -- Plugins settings
@@ -74,3 +79,9 @@ let g:nvimgdb_config_override = {
   \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
   \ }
   ]]
+
+-- Indent Blankline
+require("indent_blankline").setup {
+    show_current_context = true,
+    show_current_context_start = true,
+}
