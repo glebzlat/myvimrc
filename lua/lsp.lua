@@ -1,7 +1,9 @@
+require 'config_functions'
+
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
-local lspconfig = require 'lspconfig'
+-- local lspconfig = require 'lspconfig'
 
 local on_attach = function(client, bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -77,74 +79,77 @@ cmp.setup.cmdline({ '/', '?' }, {
   }
 })
 
--- Clangd
-lspconfig.clangd.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = lsp_flags,
-  filetypes = {
-    "c",
-    "cpp",
-    "arduino"
-  },
-}
-
--- Lua
-lspconfig.sumneko_lua.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = lsp_flags,
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim', 'use' }
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true)
-      },
-      telemetry = {
-        enable = false
-      }
-    }
+SafeRequire('lspconfig', function(lspconfig)
+  -- Clangd
+  lspconfig.clangd.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    flags = lsp_flags,
+    filetypes = {
+      "c",
+      "cpp",
+      "arduino"
+    },
   }
-}
 
--- Cmake
-lspconfig.cmake.setup {
-  capabilities = capabilities,
-  on_attach = on_attach_format,
-  flags = lsp_flags,
-}
-
--- HTML
-lspconfig.html.setup {
-  capabilities = capabilities,
-  on_attach = on_attach_format,
-  flags = lsp_flags,
-}
-
--- CSS
-lspconfig.cssls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach_format,
-  flags = lsp_flags,
-}
-
-lspconfig.eslint.setup {}
-
--- Python
-lspconfig.pylsp.setup {
-  capabilities = capabilities,
-  on_attach = on_attach_format,
-  flags = lsp_flags,
-  settings = {
-    pylsp = {
-      plugins = {
-        pycodestyle = {
-          ignore = { 'W391' },
-          maxLineLength = 100
+  -- Lua
+  lspconfig.sumneko_lua.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    flags = lsp_flags,
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { 'vim', 'use' }
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file('', true)
+        },
+        telemetry = {
+          enable = false
         }
       }
     }
-  },
-}
+  }
+
+  -- Cmake
+  lspconfig.cmake.setup {
+    capabilities = capabilities,
+    on_attach = on_attach_format,
+    flags = lsp_flags,
+  }
+
+  -- HTML
+  lspconfig.html.setup {
+    capabilities = capabilities,
+    on_attach = on_attach_format,
+    flags = lsp_flags,
+  }
+
+  -- CSS
+  lspconfig.cssls.setup {
+    capabilities = capabilities,
+    on_attach = on_attach_format,
+    flags = lsp_flags,
+  }
+
+  lspconfig.eslint.setup {}
+
+  -- Python
+  lspconfig.pylsp.setup {
+    capabilities = capabilities,
+    on_attach = on_attach_format,
+    flags = lsp_flags,
+    settings = {
+      pylsp = {
+        plugins = {
+          pycodestyle = {
+            ignore = { 'W391' },
+            maxLineLength = 100
+          }
+        }
+      }
+    },
+  }
+
+end)

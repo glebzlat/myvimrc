@@ -1,3 +1,5 @@
+require 'config_functions'
+
 local opt = vim.opt
 local gvar = vim.api.nvim_set_var
 
@@ -48,23 +50,32 @@ gvar('airline#extensions#tabline#enabled', '1') -- Tabline
 gvar('airline#extensions#tabline#formatter', 'unique_tail') -- Tabline style
 gvar('airline_highlighting_cache', '1') -- Enable caching
 
-require("trouble").setup {
-  icons = false,
-  fold_open = "v", -- icon used for open folds
-  fold_closed = ">", -- icon used for closed folds
-  indent_lines = false, -- add an indent guide below the fold icons
-  signs = {
-    -- icons / text used for a diagnostic
-    error = "error",
-    warning = "warn",
-    hint = "hint",
-    information = "info"
-  },
-}
+SafeRequire('trouble', function(trouble)
+  trouble.setup {
+    icons = false,
+    fold_open = "v", -- icon used for open folds
+    fold_closed = ">", -- icon used for closed folds
+    indent_lines = false, -- add an indent guide below the fold icons
+    signs = {
+      -- icons / text used for a diagnostic
+      error = "error",
+      warning = "warn",
+      hint = "hint",
+      information = "info"
+    },
+  }
+end)
+
+-- Indent Blankline
+SafeRequire('indent_blankline', function(indent_blankline)
+  indent_blankline.setup{
+    show_current_context = true,
+    show_current_context_start = true,
+  }
+end)
 
 -- NvimGDB
 vim.cmd [[
-
 function! NvimGdbNoTKeymaps()
 tnoremap <silent> <buffer> <esc> <c-\><c-n>
 endfunction
@@ -80,8 +91,4 @@ let g:nvimgdb_config_override = {
   \ }
   ]]
 
--- Indent Blankline
-require("indent_blankline").setup {
-    show_current_context = true,
-    show_current_context_start = true,
-}
+
