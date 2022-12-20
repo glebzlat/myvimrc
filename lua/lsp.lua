@@ -40,6 +40,7 @@ local servers = {
   -- C/C++
   { 'clangd',
     cmd = { 'clangd', '--completion-style=detailed' },
+    filetypes = { 'c', 'cpp', 'arduino' },
     on_attach = on_attach,
     capabilities = default_capabilities,
     flags = lsp_flags
