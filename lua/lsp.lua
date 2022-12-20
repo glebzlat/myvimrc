@@ -1,9 +1,12 @@
 require 'config_functions'
 
 local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
 
--- local lspconfig = require 'lspconfig'
+local default_capabilities = vim.lsp.protocol.make_client_capabilities()
+default_capabilities
+    .textDocument.completion.completionItem.snippetSupport = true
+
+local lsp_flags = { debounce_text_changes = 150 }
 
 local on_attach = function(client, bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -26,16 +29,104 @@ local on_attach = function(client, bufnr)
 
 end
 
-local on_attach_format = function(client, bufnr)
+local on_attach_with_format = function(client, bufnr)
   on_attach(client, bufnr)
-  require('lsp-format').on_attach(client)
+  SafeRequire('lsp-format', function(format)
+    format.on_attach(client)
+  end)
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local servers = {
+  -- C/C++
+  { 'clangd',
+    cmd = { 'clangd', '--completion-style=detailed' },
+    on_attach = on_attach,
+    capabilities = default_capabilities,
+    flags = lsp_flags
+  },
 
-local lsp_flags = { debounce_text_changes = 150 }
+  -- Lua
+  { 'sumneko_lua',
+    on_attach = on_attach_with_format,
+    capabilities = default_capabilities,
+    flags = lsp_flags,
+    settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+        },
+        diagnostics = {
+          globals = { 'vim', 'use' }
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file('', true),
+          checkThirdParty = false
+        },
+        telemetry = {
+          enable = false
+        }
+      }
+    }
+  },
+
+  -- CMake
+  { 'cmake',
+    on_attach = on_attach_with_format,
+    capabilities = default_capabilities,
+    flags = lsp_flags,
+  },
+
+  -- Python
+  { 'pylsp',
+    on_attach = on_attach_with_format,
+    capabilities = default_capabilities,
+    flags = lsp_flags,
+    settings = {
+      pylsp = {
+        plugins = {
+          pycodestyle = {
+            ignore = { 'W391' },
+            maxLineLength = 100
+          }
+        }
+      }
+    }
+  },
+
+  -- HTML
+  { 'html',
+    on_attach = on_attach_with_format,
+    capabilities = default_capabilities,
+    flags = lsp_flags,
+  },
+
+  -- CSS
+  { 'cssls',
+    on_attach = on_attach_with_format,
+    capabilities = default_capabilities,
+    flags = lsp_flags,
+  },
+}
+
+local opts = { noremap = true, silent = true }
+
+-- local lspconfig = require 'lspconfig'
+
+-- mason-lspconfig
+SafeRequire('mason-lspconfig', function(masonlsp)
+  masonlsp.setup({
+    ensure_installed = {
+      'clangd',
+      'cmake',
+      'pylsp',
+      'cssls',
+      'html',
+      'bashls',
+      'sumneko_lua'
+    }
+
+  })
+end)
 
 map('n', '<leader><leader>e', vim.diagnostic.open_float, opts)
 
@@ -80,76 +171,31 @@ cmp.setup.cmdline({ '/', '?' }, {
 })
 
 SafeRequire('lspconfig', function(lspconfig)
-  -- Clangd
-  lspconfig.clangd.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = lsp_flags,
-    filetypes = {
-      "c",
-      "cpp",
-      "arduino"
-    },
-  }
+  for _, server in pairs(servers) do
+    local config = lspconfig[server[1]]
 
-  -- Lua
-  lspconfig.sumneko_lua.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = lsp_flags,
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = { 'vim', 'use' }
-        },
-        workspace = {
-          library = vim.api.nvim_get_runtime_file('', true)
-        },
-        telemetry = {
-          enable = false
-        }
-      }
-    }
-  }
+    if config['document_config'] == nil then
+      break
+    end
 
-  -- Cmake
-  lspconfig.cmake.setup {
-    capabilities = capabilities,
-    on_attach = on_attach_format,
-    flags = lsp_flags,
-  }
+    local server_executable = config.document_config.default_config.cmd
 
-  -- HTML
-  lspconfig.html.setup {
-    capabilities = capabilities,
-    on_attach = on_attach_format,
-    flags = lsp_flags,
-  }
+    if type(server_executable) ~= 'table' then
+      break
+    end
+    server_executable = server_executable[1]
 
-  -- CSS
-  lspconfig.cssls.setup {
-    capabilities = capabilities,
-    on_attach = on_attach_format,
-    flags = lsp_flags,
-  }
+    if vim.fn.executable(server_executable) ~= 1 then
+      break
+    end
 
-  lspconfig.eslint.setup {}
+    local options = {}
+    for k, v in pairs(server) do
+      if type(k) ~= 'number' then
+        options[k] = v
+      end
+    end
 
-  -- Python
-  lspconfig.pylsp.setup {
-    capabilities = capabilities,
-    on_attach = on_attach_format,
-    flags = lsp_flags,
-    settings = {
-      pylsp = {
-        plugins = {
-          pycodestyle = {
-            ignore = { 'W391' },
-            maxLineLength = 100
-          }
-        }
-      }
-    },
-  }
-
+    config.setup(options)
+  end
 end)
