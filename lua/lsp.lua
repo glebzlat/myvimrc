@@ -8,7 +8,7 @@ default_capabilities
 
 local lsp_flags = { debounce_text_changes = 150 }
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
   map('n', '<leader><leader>ca', vim.lsp.buf.code_action, bufopts)
   map('n', '<leader>gD', vim.lsp.buf.declaration, bufopts)
