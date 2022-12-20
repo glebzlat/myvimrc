@@ -3,6 +3,10 @@ require 'config_functions'
 local opt = vim.opt
 local gvar = vim.api.nvim_set_var
 
+vim.cmd [[ cabbrev h tab h ]]
+vim.api.nvim_create_user_command('Th', 'tab help <args>',
+{ nargs = 1, complete = 'help' })
+
 opt.mouse = 'a'
 opt.encoding = 'utf-8'
 opt.showcmd = true
@@ -33,7 +37,7 @@ vim.g.tagbar_compact = 1
 
 -- 2 spaces for selected filetypes
 vim.cmd [[
-autocmd FileType cpp,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp,arduino,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
 ]]
 
 opt.so = 5                  --Отступ курсора от края экрана
@@ -88,6 +92,18 @@ end)
 
 SafeRequire('Comment', function(comment)
   comment.setup()
+end)
+
+SafeRequire('mason', function(mason)
+  mason.setup ({
+    ui = {
+      icons = {
+        package_installed = '+',
+        package_pending = '>',
+        package_uninstalled = '-'
+      }
+    }
+  })
 end)
 
 -- NvimGDB
