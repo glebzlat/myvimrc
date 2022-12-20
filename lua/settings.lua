@@ -3,15 +3,9 @@ require 'details.functions'
 local opt = vim.opt
 local gvar = vim.api.nvim_set_var
 
--- Abbreviation for :h - :tab h - open help in a new tab
-vim.cmd [[ cabbrev h tab h ]]
--- Command for new tab help :Th
-vim.api.nvim_create_user_command('Th', 'tab help <args>',
-  { nargs = 1, complete = 'help' })
+-- Open help in a new tab
+vim.cmd [[ cabbrev th tab h ]]
 
-opt.mouse = 'a'
-opt.encoding = 'utf-8'
-opt.showcmd = true
 vim.cmd([[
 filetype indent plugin on
 syntax enable
@@ -20,7 +14,9 @@ gvar('mapleader', ';')
 
 -- Triangle braces match is very useful in C++ template programming
 vim.o.matchpairs = "(:),{:},[:],<:>"
-
+opt.mouse = 'a'
+opt.encoding = 'utf-8'
+opt.showcmd = false
 opt.cursorline = true -- Highlight current cursor line
 opt.number = true -- Show line numbers
 opt.relativenumber = true
@@ -35,6 +31,15 @@ opt.shiftwidth = 4
 opt.softtabstop = 2
 opt.smartindent = true
 opt.foldcolumn = 'auto:9'
+opt.scrolloff = 5 -- Cursor indentation from window top and bottom edges
+opt.sidescrolloff = 12 -- Cursor indentation from the window left and right
+opt.foldcolumn = '2' -- Foldcolumn width
+opt.colorcolumn = '80'
+opt.splitright = true -- Put a new window to the right
+opt.splitbelow = true -- Put a new window below
+opt.lazyredraw = true -- To prevent flicker, i think
+opt.title = true -- Title of the window
+opt.synmaxcol = 512 -- Avoid to slow down redrawing for very long lines
 
 vim.g.tagbar_compact = 1
 
@@ -42,10 +47,6 @@ vim.g.tagbar_compact = 1
 vim.cmd [[
 autocmd FileType cpp,arduino,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
 ]]
-
-opt.so = 5 -- Cursor indentation from window top and bottom edges
-opt.foldcolumn = '2' -- Foldcolumn width
-opt.colorcolumn = '80'
 
 -- Colorscheme
 vim.cmd [[ colorscheme elflord ]]
@@ -61,14 +62,29 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   end
 })
 
+-- Backup
+local function get_backup_directory()
+  local dir = vim.fn.stdpath 'data' .. '/backup'
+  if vim.fn.isdirectory(dir) ~= 1 then
+    vim.fn.mkdir(dir, 'p', '0700')
+  end
+  return dir
+end
+
+opt.backup = true
+opt.backupdir = get_backup_directory()
+opt.backupcopy = 'yes' -- Make a copy and overwrite the original file
+
 -------------------------------------------------------------------------------
 -- Plugins settings
 -------------------------------------------------------------------------------
 
+local safe_require = SafeRequire
+
 -- Vim-Airline
 gvar('airline_highlighting_cache', '1') -- Enable caching
 
-SafeRequire('tabline', function(tabline)
+safe_require('tabline', function(tabline)
   tabline.setup {
     show_index = true,
     show_modify = true,
@@ -77,7 +93,7 @@ SafeRequire('tabline', function(tabline)
   }
 end)
 
-SafeRequire('trouble', function(trouble)
+safe_require('trouble', function(trouble)
   trouble.setup {
     icons = false,
     fold_open = "v", -- icon used for open folds
@@ -94,18 +110,18 @@ SafeRequire('trouble', function(trouble)
 end)
 
 -- Indent Blankline
-SafeRequire('indent_blankline', function(indent_blankline)
+safe_require('indent_blankline', function(indent_blankline)
   indent_blankline.setup {
     show_current_context = true,
     show_current_context_start = true,
   }
 end)
 
-SafeRequire('Comment', function(comment)
+safe_require('Comment', function(comment)
   comment.setup()
 end)
 
-SafeRequire('mason', function(mason)
+safe_require('mason', function(mason)
   mason.setup({
     ui = {
       icons = {
