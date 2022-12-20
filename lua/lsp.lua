@@ -1,4 +1,4 @@
-require 'config_functions'
+require 'details.functions'
 
 local map = vim.keymap.set
 
@@ -39,7 +39,7 @@ end
 local servers = {
   -- C/C++
   { 'clangd',
-    cmd = { 'clangd', '--completion-style=detailed' },
+    cmd = { 'clangd', '--completion-style=detailed --clang-tidy' },
     filetypes = { 'c', 'cpp', 'arduino' },
     on_attach = on_attach,
     capabilities = default_capabilities,

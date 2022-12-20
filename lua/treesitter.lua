@@ -1,4 +1,4 @@
-require 'config_functions'
+require 'details.functions'
 
 local ts_path = tostring(vim.fn.stdpath 'data') .. 'ts_parsers'
 

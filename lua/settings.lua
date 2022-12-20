@@ -1,4 +1,4 @@
-require 'config_functions'
+require 'details.functions'
 
 local opt = vim.opt
 local gvar = vim.api.nvim_set_var
