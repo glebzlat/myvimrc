@@ -1,5 +1,13 @@
 table.unpack = table.unpack or unpack
 
+function UpdateFolding()
+  vim.api.nvim_input('zX')
+end
+
+function OpenAllFolds()
+  vim.api.nvim_input('zR')
+end
+
 function SafeRequire(modules, callback)
   if type(modules) == "string" then
     modules = { modules }
@@ -19,4 +27,3 @@ function SafeRequire(modules, callback)
 
   callback(table.unpack(mods))
 end
-

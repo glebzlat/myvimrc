@@ -5,7 +5,7 @@ local gvar = vim.api.nvim_set_var
 
 vim.cmd [[ cabbrev h tab h ]]
 vim.api.nvim_create_user_command('Th', 'tab help <args>',
-{ nargs = 1, complete = 'help' })
+  { nargs = 1, complete = 'help' })
 
 opt.mouse = 'a'
 opt.encoding = 'utf-8'
@@ -19,16 +19,16 @@ gvar('mapleader', ';')
 vim.o.matchpairs = "(:),{:},[:],<:>"
 
 opt.cursorline = true
-opt.number = true           -- Line number
+opt.number = true -- Line number
 opt.relativenumber = true
 opt.autoindent = true
 opt.ruler = true
-opt.wrap = false            -- Wrap long lines
+opt.wrap = false -- Wrap long lines
 -- opt.linebreak = true     -- Break long lines
 -- opt.showbreak = '=> '
 opt.expandtab = true
-opt.tabstop = 4             --1 tab = 4 пробела
-opt.shiftwidth = 4          --Смещаем на 4 пробела
+opt.tabstop = 4 --1 tab = 4 пробела
+opt.shiftwidth = 4 --Смещаем на 4 пробела
 opt.softtabstop = 2
 opt.smartindent = true
 opt.foldcolumn = 'auto:9'
@@ -40,13 +40,20 @@ vim.cmd [[
 autocmd FileType cpp,arduino,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
 ]]
 
-opt.so = 5                  --Отступ курсора от края экрана
-opt.foldcolumn = '2'        --Ширина колонки для фолдов
+opt.so = 5 --Отступ курсора от края экрана
+opt.foldcolumn = '2' --Ширина колонки для фолдов
 opt.colorcolumn = '80'
 
 -- Colorscheme
 vim.cmd [[ colorscheme elflord ]]
 -- vim.cmd [[ colorscheme default ]]
+
+vim.api.nvim_create_autocmd('BufWritePost', {
+  callback = function()
+    UpdateFolding()
+    OpenAllFolds()
+  end
+})
 
 -------------------------------------------------------------------------------
 -- Plugins settings
@@ -84,7 +91,7 @@ end)
 
 -- Indent Blankline
 SafeRequire('indent_blankline', function(indent_blankline)
-  indent_blankline.setup{
+  indent_blankline.setup {
     show_current_context = true,
     show_current_context_start = true,
   }
@@ -95,7 +102,7 @@ SafeRequire('Comment', function(comment)
 end)
 
 SafeRequire('mason', function(mason)
-  mason.setup ({
+  mason.setup({
     ui = {
       icons = {
         package_installed = '+',
@@ -122,5 +129,3 @@ let g:nvimgdb_config_override = {
   \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
   \ }
   ]]
-
-

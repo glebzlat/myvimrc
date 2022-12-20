@@ -7,7 +7,7 @@ vim.opt.runtimepath:append(ts_path)
 
 SafeRequire('nvim-treesitter.configs', function(ts)
   ts.setup {
-    ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua"},
+    ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
     sync_install = false,
     auto_install = false,
 
@@ -19,8 +19,10 @@ SafeRequire('nvim-treesitter.configs', function(ts)
     },
   }
 
-  -- code folding 
+  -- code folding
   vim.opt.foldmethod = "expr"
   vim.cmd [[ set foldexpr=nvim_treesitter#foldexpr() ]]
   vim.opt.foldcolumn = "1"
+  vim.opt.foldlevelstart = 99
+
 end)
