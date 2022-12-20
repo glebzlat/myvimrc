@@ -1,20 +1,22 @@
+table.unpack = table.unpack or unpack
+
 function SafeRequire(modules, callback)
-	if type(modules) == "string" then
-		modules = { modules }
-	end
+  if type(modules) == "string" then
+    modules = { modules }
+  end
 
-	local mods = {}
+  local mods = {}
 
-	for _, module in ipairs(modules) do
-		local ok, mod = pcall(require, module)
-		if not ok then
-			vim.notify(module .. " not found", vim.log.levels.WARN)
-			return
-		end
+  for _, module in ipairs(modules) do
+    local ok, mod = pcall(require, module)
+    if not ok then
+      vim.notify(module .. " not found", vim.log.levels.WARN)
+      return
+    end
 
-		table.insert(mods, mod)
-	end
+    table.insert(mods, mod)
+  end
 
-	callback(unpack(mods))
+  callback(table.unpack(mods))
 end
 
