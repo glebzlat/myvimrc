@@ -1,5 +1,6 @@
 vim.cmd [[
-call plug#begin('~/.config/nvim/plugged/')
+" call plug#begin('~/.config/nvim/plugged/')
+call plug#begin()
 
 " utilities and look
 Plug 'preservim/nerdtree'
@@ -11,6 +12,10 @@ Plug 'gpanders/editorconfig.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'crispgm/nvim-tabline'
 Plug 'numToStr/Comment.nvim'
+
+" Automatic packet manager
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 
 " lsps, syntax highlighting, formatting, completion, etc
 Plug 'neovim/nvim-lspconfig'
