@@ -4,7 +4,9 @@ local opt = vim.opt
 local gvar = vim.api.nvim_set_var
 
 -- Open help in a new tab
-vim.cmd [[ cabbrev th tab h ]]
+vim.cmd [[ 
+cabbrev th tab h
+]]
 
 vim.cmd([[
 filetype indent plugin on
