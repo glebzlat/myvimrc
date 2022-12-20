@@ -175,10 +175,6 @@ SafeRequire('lspconfig', function(lspconfig)
   for _, server in pairs(servers) do
     local config = lspconfig[server[1]]
 
-    if config['document_config'] == nil then
-      break
-    end
-
     local server_executable = config.document_config.default_config.cmd
 
     if type(server_executable) ~= 'table' then
