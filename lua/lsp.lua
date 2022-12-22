@@ -27,6 +27,9 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.format { async = true }
   end, bufopts)
 
+  SafeRequire('folding', function(folding)
+    folding.on_attach()
+  end)
 end
 
 local on_attach_with_format = function(client, bufnr)
@@ -107,11 +110,10 @@ local servers = {
     capabilities = default_capabilities,
     flags = lsp_flags,
   },
+
 }
 
 local opts = { noremap = true, silent = true }
-
--- local lspconfig = require 'lspconfig'
 
 -- mason-lspconfig
 SafeRequire('mason-lspconfig', function(masonlsp)
@@ -125,7 +127,6 @@ SafeRequire('mason-lspconfig', function(masonlsp)
       'bashls',
       'sumneko_lua'
     }
-
   })
 end)
 
@@ -174,6 +175,11 @@ cmp.setup.cmdline({ '/', '?' }, {
 SafeRequire('lspconfig', function(lspconfig)
   for _, server in pairs(servers) do
     local config = lspconfig[server[1]]
+
+    -- To prevent fault if the server name is not correct
+    if not config['document_config'] then
+      break
+    end
 
     local server_executable = config.document_config.default_config.cmd
 
