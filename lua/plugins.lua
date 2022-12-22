@@ -1,36 +1,91 @@
-vim.cmd [[
-" call plug#begin('~/.config/nvim/plugged/')
-call plug#begin()
+require 'details.functions'
 
-" utilities and look
-Plug 'preservim/nerdtree'
-Plug 'folke/trouble.nvim'
-Plug 'voldikss/vim-floaterm'
-Plug 'sakhnik/nvim-gdb', {'do': ':!./install.sh'}
-Plug 'vim-airline/vim-airline'
-Plug 'gpanders/editorconfig.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'crispgm/nvim-tabline'
-Plug 'numToStr/Comment.nvim'
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data') ..
+      '/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({
+      'git', 'clone', '--depth', '1',
+      'https://github.com/wbthomason/packer.nvim', install_path
+    })
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
 
-" Automatic packet manager
-Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
+local is_bootstrap = ensure_packer()
 
-" lsps, syntax highlighting, formatting, completion, etc
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'aklt/plantuml-syntax'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'lukas-reineke/lsp-format.nvim'
+SafeRequire('packer', function(packer)
+  packer.startup(function(use)
+    use 'wbthomason/packer.nvim'
 
-" dependency for cmp-nvim-lsp, nvim-cmp, cmp-vsnip, etc
-Plug 'nvim-lua/plenary.nvim'
+    -- utilities and look
+    use 'preservim/nerdtree'
+    use 'folke/trouble.nvim'
+    use 'voldikss/vim-floaterm'
+    use 'gpanders/editorconfig.nvim'
+    use 'lukas-reineke/indent-blankline.nvim'
+    use 'crispgm/nvim-tabline'
+    use 'numToStr/Comment.nvim'
+    use 'powerman/vim-plugin-ruscmd'
+    use 'vim-airline/vim-airline'
 
-call plug#end()
-]]
+    use 'pineapplegiant/spaceduck'
+    use 'nlknguyen/papercolor-theme'
+
+    use { 'neovim/nvim-lspconfig',
+      requires = {
+        -- Automatic packet manager
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim'
+      }
+    }
+
+    use 'pierreglaser/folding-nvim'
+    use { 'hrsh7th/nvim-cmp', requires = { 'hrsh7th/cmp-nvim-lsp', } }
+    use { 'L3MON4D3/LuaSnip',
+      tag = 'v<CurrentMajor>.*',
+      run = 'make install_jsregexp' }
+
+    use 'folke/neodev.nvim'
+    use 'hrsh7th/cmp-vsnip'
+    use 'hrsh7th/vim-vsnip'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-cmdline'
+    use 'aklt/plantuml-syntax'
+    use 'lukas-reineke/lsp-format.nvim'
+
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      run = function()
+        SafeRequire('nvim-treesitter.install', function(ts)
+          ts.update { with_sync = true }
+        end)
+      end
+    }
+
+    -- dependency for cmp-nvim-lsp, nvim-cmp, cmp-vsnip, etc
+    use 'nvim-lua/plenary.nvim'
+
+    if is_bootstrap then packer.sync() end
+  end)
+end)
+
+if is_bootstrap then
+  print '==================================='
+  print '    Plugins are being installed'
+  print '    Wait until Packer completes,'
+  print '        then restart nvim'
+  print '==================================='
+  return
+end
+
+-- Automatically source and recompile packer
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
