@@ -36,6 +36,7 @@ opt.foldcolumn = 'auto:9'
 opt.scrolloff = 5 -- Cursor indentation from window top and bottom edges
 opt.sidescrolloff = 12 -- Cursor indentation from the window left and right
 opt.foldcolumn = '2' -- Foldcolumn width
+opt.foldlevelstart = 99 -- To prevent fold closing on enter
 opt.colorcolumn = '80'
 opt.splitright = true -- Put a new window to the right
 opt.splitbelow = true -- Put a new window below
@@ -51,18 +52,8 @@ autocmd FileType cpp,arduino,html,css,javascript,lua,yaml setlocal shiftwidth=2 
 ]]
 
 -- Colorscheme
-vim.cmd [[ colorscheme elflord ]]
--- vim.cmd [[ colorscheme default ]]
-
--- Update and open folds when write
--- It is important, because formatter removes all foldings,
--- and when they're added again, they are closed
-vim.api.nvim_create_autocmd('BufWritePost', {
-  callback = function()
-    UpdateFolding()
-    OpenAllFolds()
-  end
-})
+opt.termguicolors = true
+vim.cmd [[ colorscheme PaperColor ]]
 
 -- Backup
 local function get_backup_directory()
@@ -109,6 +100,25 @@ safe_require('trouble', function(trouble)
       information = "info"
     },
   }
+end)
+
+vim.cmd [[
+" press <Tab> to expand or jump in a snippet. These can also be mapped separately
+" via <Plug>luasnip-expand-snippet and <Plug>luasnip-jump-next.
+imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+" -1 for jumping backwards.
+inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+" For changing choices in choiceNodes (not strictly necessary for a basic setup).
+imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+]]
+
+safe_require('luasnip.loaders.from_snipmate', function(loader)
+  loader.lazy_load()
 end)
 
 -- Indent Blankline
