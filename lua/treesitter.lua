@@ -19,10 +19,5 @@ SafeRequire('nvim-treesitter.configs', function(ts)
     },
   }
 
-  -- code folding
-  vim.opt.foldmethod = "expr"
-  vim.cmd [[ set foldexpr=nvim_treesitter#foldexpr() ]]
-  vim.opt.foldcolumn = "1"
-  vim.opt.foldlevelstart = 99
 
 end)
