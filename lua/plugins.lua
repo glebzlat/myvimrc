@@ -32,7 +32,6 @@ SafeRequire('packer', function(packer)
     use 'powerman/vim-plugin-ruscmd'
     use 'vim-airline/vim-airline'
 
-    use 'pineapplegiant/spaceduck'
     use 'nlknguyen/papercolor-theme'
 
     use { 'neovim/nvim-lspconfig',
@@ -45,11 +44,7 @@ SafeRequire('packer', function(packer)
 
     use 'pierreglaser/folding-nvim'
     use { 'hrsh7th/nvim-cmp', requires = { 'hrsh7th/cmp-nvim-lsp', } }
-    use { 'L3MON4D3/LuaSnip',
-      tag = 'v<CurrentMajor>.*',
-      run = 'make install_jsregexp' }
 
-    use 'folke/neodev.nvim'
     use 'hrsh7th/cmp-vsnip'
     use 'hrsh7th/vim-vsnip'
     use 'hrsh7th/cmp-buffer'
@@ -68,6 +63,11 @@ SafeRequire('packer', function(packer)
 
     -- dependency for cmp-nvim-lsp, nvim-cmp, cmp-vsnip, etc
     use 'nvim-lua/plenary.nvim'
+
+    -- Add custom plugins from lua/custom/plugins.lua
+    SafeRequire { 'custom.plugins', function(plugins)
+      plugins(use)
+    end, notify = false }
 
     if is_bootstrap then packer.sync() end
   end)
