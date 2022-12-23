@@ -23,10 +23,9 @@ opt.cursorline = true -- Highlight current cursor line
 opt.number = true -- Show line numbers
 opt.relativenumber = true
 opt.autoindent = true
-opt.ruler = true
 opt.wrap = false -- Wrap long lines (do not carry to the next line)
--- opt.linebreak = true     -- Break long lines (carry)
--- opt.showbreak = '=> '    -- Break marker
+opt.linebreak = false -- Break long lines (carry)
+opt.showbreak = '=> '    -- Break marker
 opt.expandtab = true
 opt.tabstop = 4
 opt.shiftwidth = 4
@@ -43,6 +42,7 @@ opt.splitbelow = true -- Put a new window below
 opt.lazyredraw = true -- To prevent flicker, i think
 opt.title = true -- Title of the window
 opt.synmaxcol = 512 -- Avoid to slow down redrawing for very long lines
+opt.ruler = false
 
 vim.g.tagbar_compact = 1
 

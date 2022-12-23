@@ -1,1 +1,2 @@
--- require 'use'
+return function(_)
+end

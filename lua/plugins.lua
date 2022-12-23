@@ -36,14 +36,16 @@ SafeRequire('packer', function(packer)
 
     use { 'neovim/nvim-lspconfig',
       requires = {
-        -- Automatic packet manager
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim'
       }
     }
 
     use 'pierreglaser/folding-nvim'
-    use { 'hrsh7th/nvim-cmp', requires = { 'hrsh7th/cmp-nvim-lsp', } }
+
+    use { 'hrsh7th/nvim-cmp',
+      requires = { 'hrsh7th/cmp-nvim-lsp' }
+    }
 
     use 'hrsh7th/cmp-vsnip'
     use 'hrsh7th/vim-vsnip'
@@ -65,12 +67,15 @@ SafeRequire('packer', function(packer)
     use 'nvim-lua/plenary.nvim'
 
     -- Add custom plugins from lua/custom/plugins.lua
-    SafeRequire { 'custom.plugins', function(plugins)
+    SafeRequire('custom.plugins', function(plugins)
       plugins(use)
-    end, notify = false }
+    end, true)
 
     if is_bootstrap then packer.sync() end
   end)
+
+  -- Compile lazy-loaders
+  packer.compile()
 end)
 
 if is_bootstrap then
