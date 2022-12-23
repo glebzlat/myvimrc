@@ -8,7 +8,13 @@ function OpenAllFolds()
   vim.api.nvim_input('zR')
 end
 
-function SafeRequire(modules, callback)
+function SafeRequire(modules, callback, notify)
+  local notifymsg = function(module)
+    if notify then
+      vim.notify(module .. " not found", vim.log.levels.WARN)
+    end
+  end
+
   if type(modules) == "string" then
     modules = { modules }
   end
@@ -18,7 +24,7 @@ function SafeRequire(modules, callback)
   for _, module in ipairs(modules) do
     local ok, mod = pcall(require, module)
     if not ok then
-      vim.notify(module .. " not found", vim.log.levels.WARN)
+      notifymsg(module)
       return
     end
 
