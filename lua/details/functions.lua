@@ -9,6 +9,7 @@ function OpenAllFolds()
 end
 
 function SafeRequire(modules, callback, notify)
+  notify = notify or true
   local notifymsg = function(module)
     if notify then
       vim.notify(module .. " not found", vim.log.levels.WARN)
