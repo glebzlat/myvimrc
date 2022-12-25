@@ -1,5 +1,3 @@
-require 'details.functions'
-
 local map = vim.keymap.set
 
 local default_capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -27,23 +25,21 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.format { async = true }
   end, bufopts)
 
-  SafeRequire('folding', function(folding)
-    folding.on_attach()
-  end)
+  require 'folding'.on_attach()
 end
 
 local on_attach_with_format = function(client, bufnr)
   on_attach(client, bufnr)
-  SafeRequire('lsp-format', function(format)
-    format.on_attach(client)
-  end)
+  require 'lsp-format'.on_attach(client)
 end
+
+local arduinolsp = require 'arduinolsp'
 
 local servers = {
   -- C/C++
   { 'clangd',
-    cmd = { 'clangd', '--completion-style=detailed --clang-tidy' },
-    filetypes = { 'c', 'cpp', 'arduino' },
+    cmd = { 'clangd', '--completion-style=detailed', '--clang-tidy' },
+    filetypes = { 'c', 'cpp', },
     on_attach = on_attach,
     capabilities = default_capabilities,
     flags = lsp_flags
@@ -111,94 +107,60 @@ local servers = {
     flags = lsp_flags,
   },
 
+  { 'arduino_language_server',
+    on_attach = on_attach,
+    capabilities = default_capabilities,
+    flags = lsp_flags,
+    on_new_config = arduinolsp.on_new_config,
+    filetypes = { 'arduino' },
+    cmd = {
+      'arduino-language-server',
+    }
+  }
+
 }
 
 local opts = { noremap = true, silent = true }
-
--- mason-lspconfig
-SafeRequire('mason-lspconfig', function(masonlsp)
-  masonlsp.setup({
-    ensure_installed = {
-      'clangd',
-      'cmake',
-      'pylsp',
-      'cssls',
-      'html',
-      'bashls',
-      'sumneko_lua'
-    }
-  })
-end)
-
 map('n', '<leader><leader>e', vim.diagnostic.open_float, opts)
 
--- completion
-local cmp = require 'cmp'
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  window = {
-    documentation = cmp.config.window.bordered(),
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'vsnip' },
-    { name = 'buffer' },
-    { name = 'path' }
-  }),
-  mapping = cmp.mapping.preset.insert({
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<Cr>'] = cmp.mapping.confirm({ select = true }),
-  })
-}
+local vim_warn = vim.log.levels.WARN
 
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'cmdline' }
-  })
-})
+local lspconfig = require 'lspconfig'
 
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
+for _, server in pairs(servers) do
+  local config = lspconfig[server[1]]
+  local name = server[1]
 
-SafeRequire('lspconfig', function(lspconfig)
-  for _, server in pairs(servers) do
-    local config = lspconfig[server[1]]
-
-    -- To prevent fault if the server name is not correct
-    if not config['document_config'] then
-      break
-    end
-
-    local server_executable = config.document_config.default_config.cmd
-
-    if type(server_executable) ~= 'table' then
-      break
-    end
-    server_executable = server_executable[1]
-
-    if vim.fn.executable(server_executable) ~= 1 then
-      break
-    end
-
-    local options = {}
-    for k, v in pairs(server) do
-      if type(k) ~= 'number' then
-        options[k] = v
-      end
-    end
-
-    config.setup(options)
+  -- To prevent fault if the server name is not correct
+  if not config['document_config'] then
+    break
   end
-end)
+
+  local server_executable = config.document_config.default_config.cmd
+
+  if type(server_executable) ~= 'table' then
+    local cmd = server['cmd']
+    if not server['cmd'] then
+      vim.notify(('lspconfig setup: for server %q executable not found')
+        :format(name), vim_warn)
+      break
+    end
+    server_executable = cmd
+  end
+  server_executable = server_executable[1]
+
+  if vim.fn.executable(server_executable) ~= 1 then
+    vim.notify(('lspconfig setup: %q is not found')
+      :format(server_executable), vim_warn)
+    break
+  end
+
+  local options = {}
+  for k, v in pairs(server) do
+    if type(k) ~= 'number' then
+      options[k] = v
+    end
+  end
+
+  config.setup(options)
+end

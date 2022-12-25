@@ -1,12 +1,29 @@
 local map = vim.api.nvim_set_keymap
-local default_st = {silent = true, noremap = true}
+local default_st = { silent = true, noremap = true }
+
+vim.cmd [[
+" Expand
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+" Jump forward or backward
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+]]
 
 -- Trouble keymaps
 map('n', '<leader>xx', '<cmd>TroubleToggle<cr>', default_st)
 map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>',
-default_st)
+  default_st)
 map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>',
-default_st)
+  default_st)
 map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>', default_st)
 map('n', '<leader>xl', '<cmd>TroubleToggle quickfix<cr>', default_st)
 map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', default_st)
@@ -44,4 +61,3 @@ vim.g.floaterm_height = 0.8
 vim.g.floaterm_width = 0.9
 
 vim.g.floaterm_title = 'floaterm($1/$2)'
-

@@ -1,5 +1,3 @@
-require 'details.functions'
-
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data') ..
@@ -15,70 +13,62 @@ local ensure_packer = function()
   return false
 end
 
-local is_bootstrap = ensure_packer()
+local packer_bootstrap = ensure_packer()
 
-SafeRequire('packer', function(packer)
-  packer.startup(function(use)
-    use 'wbthomason/packer.nvim'
+require 'packer'.startup(function(use)
+  use 'wbthomason/packer.nvim'
 
-    -- utilities and look
-    use 'preservim/nerdtree'
-    use 'folke/trouble.nvim'
-    use 'voldikss/vim-floaterm'
-    use 'gpanders/editorconfig.nvim'
-    use 'lukas-reineke/indent-blankline.nvim'
-    use 'crispgm/nvim-tabline'
-    use 'numToStr/Comment.nvim'
-    use 'powerman/vim-plugin-ruscmd'
-    use 'vim-airline/vim-airline'
+  use '~/.config/nvim/my_plugins/arduinolsp'
 
-    use 'nlknguyen/papercolor-theme'
+  -- utilities and look
+  use 'preservim/nerdtree'
+  use 'folke/trouble.nvim'
+  use 'voldikss/vim-floaterm'
+  use 'gpanders/editorconfig.nvim'
+  use 'lukas-reineke/indent-blankline.nvim'
+  use 'crispgm/nvim-tabline'
+  use 'numToStr/Comment.nvim'
+  use 'powerman/vim-plugin-ruscmd'
+  use 'vim-airline/vim-airline'
 
-    use { 'neovim/nvim-lspconfig',
-      requires = {
-        'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim'
-      }
+  use 'dstein64/vim-startuptime'
+
+  use 'nlknguyen/papercolor-theme'
+
+  use { 'neovim/nvim-lspconfig',
+    requires = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim'
     }
+  }
 
-    use 'pierreglaser/folding-nvim'
+  use 'pierreglaser/folding-nvim'
 
-    use { 'hrsh7th/nvim-cmp',
-      requires = { 'hrsh7th/cmp-nvim-lsp' }
-    }
+  use { 'hrsh7th/nvim-cmp',
+    requires = { 'hrsh7th/cmp-nvim-lsp' }
+  }
 
-    use 'hrsh7th/cmp-vsnip'
-    use 'hrsh7th/vim-vsnip'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-cmdline'
-    use 'aklt/plantuml-syntax'
-    use 'lukas-reineke/lsp-format.nvim'
+  use 'hrsh7th/vim-vsnip'
+  use 'hrsh7th/cmp-vsnip'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-cmdline'
+  use 'aklt/plantuml-syntax'
+  use 'lukas-reineke/lsp-format.nvim'
 
-    use {
-      'nvim-treesitter/nvim-treesitter',
-      run = function()
-        SafeRequire('nvim-treesitter.install', function(ts)
-          ts.update { with_sync = true }
-        end)
-      end
-    }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      require 'nvim-treesitter.install'.update { with_sync = true }
+    end
+  }
 
-    -- dependency for cmp-nvim-lsp, nvim-cmp, cmp-vsnip, etc
-    use 'nvim-lua/plenary.nvim'
+  -- dependency for cmp-nvim-lsp, nvim-cmp, cmp-vsnip, etc
+  use 'nvim-lua/plenary.nvim'
 
-    -- Add custom plugins from lua/custom/plugins.lua
-    SafeRequire('custom.plugins', function(plugins)
-      plugins(use)
-    end, true)
-
-    if is_bootstrap then packer.sync() end
-  end)
-
-  -- Compile lazy-loaders
-  packer.compile()
+  if packer_bootstrap then require 'packer'.sync() end
 end)
 
-if is_bootstrap then
+if packer_bootstrap then
   print '==================================='
   print '    Plugins are being installed'
   print '    Wait until Packer completes,'
