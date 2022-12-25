@@ -1,5 +1,5 @@
-require('plugins')
-require('settings')
-require('lsp')
-require('keymaps')
-require('treesitter')
+require 'config.plugins'
+require 'config.settings'
+require 'config.lsp'
+require 'config.keymaps'
+require 'config.treesitter'
