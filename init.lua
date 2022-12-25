@@ -1,5 +1,6 @@
 require 'config.plugins'
 require 'config.settings'
+require 'config.cmp'
 require 'config.lsp'
 require 'config.keymaps'
 require 'config.treesitter'
