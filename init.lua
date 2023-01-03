@@ -35,6 +35,7 @@ option.tabstop = 4
 option.shiftwidth = 4
 option.softtabstop = 4
 option.smartindent = true
+option.foldmethod = 'indent'
 option.foldcolumn = "auto:2"
 option.foldlevelstart = 99 -- To prevent fold closing on enter
 option.splitright = true -- Put a new window to the right
