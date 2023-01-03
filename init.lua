@@ -35,7 +35,7 @@ option.tabstop = 4
 option.shiftwidth = 4
 option.softtabstop = 4
 option.smartindent = true
-option.foldmethod = 'indent'
+option.foldmethod = "indent"
 option.foldcolumn = "auto:2"
 option.foldlevelstart = 99 -- To prevent fold closing on enter
 option.splitright = true -- Put a new window to the right
@@ -111,16 +111,31 @@ if packer_bootstrap then return end
 local mason_root_dir = path.concat { vim.fn.stdpath "data", "mason" }
 local mason_bin_dir = path.concat { mason_root_dir, "bin" }
 
-require("mason").setup {
-  ui = {
-    icons = {
-      package_installed = "+",
-      package_pending = ">",
-      package_uninstalled = "-",
+safe_require("mason", function(mason)
+  mason.setup {
+    ui = {
+      icons = {
+        package_installed = "+",
+        package_pending = ">",
+        package_uninstalled = "-",
+      },
     },
-  },
-  install_root_dir = mason_root_dir,
-}
+    install_root_dir = mason_root_dir,
+  }
+
+  -- Is mason really has not something like 'ensure_installed'?
+  local registry = require "mason-registry"
+
+  if not registry.is_installed "clang-format" then
+    vim.cmd [[ MasonInstall clang-format ]]
+  end
+
+  if not registry.is_installed "stylua" then
+    vim.cmd [[ MasonInstall stylua ]]
+  end
+end)
+
+-- mason-lspconfig -----------------------------------------------------------
 
 safe_require(
   "mason-lspconfig",
@@ -148,8 +163,8 @@ safe_require("arduino", function(arduinonvim)
   arduino = arduinonvim
 
   arduinonvim.setup {
-    -- arduino_config_dir = arduinonvim.get_arduinocli_datapath(),
-    arduino_config_dir = "/home/dave/.arduino15"
+    arduino_config_dir = arduinonvim.get_arduinocli_datapath(),
+    -- arduino_config_dir = "/home/dave/.arduino15",
   }
 
   vim.api.nvim_create_autocmd("User", {
@@ -165,6 +180,7 @@ safe_require("arduino", function(arduinonvim)
     end,
   })
 end)
+
 -- Lspconfig -----------------------------------------------------------------
 
 local default_capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -327,7 +343,11 @@ safe_require("formatter", function(formatter)
   map("n", "<leader>F", "<cmd>FormatWrite<cr>", default_map)
 end)
 
+-- completion ----------------------------------------------------------------
+
 require "config.cmp"
+
+-- look ----------------------------------------------------------------------
 
 require("tabline").setup {
   show_index = true,
@@ -372,11 +392,9 @@ require("hardline").setup {
   },
 }
 
-require("Comment").setup()
+-- Treesitter ----------------------------------------------------------------
 
 local ts_path = tostring(vim.fn.stdpath "data") .. "ts_parsers"
-
--- Treesitter ----------------------------------------------------------------
 
 safe_require("nvim-treesitter.configs", function(ts)
   vim.opt.runtimepath:append(ts_path) -- parsers directory
@@ -420,6 +438,8 @@ safe_require("telescope", function(telescope)
   map("n", "<leader>th", builtin.help_tags, default_map)
   map("n", "<leader>tk", builtin.keymaps, default_map)
 end)
+
+require("Comment").setup()
 
 -------------------------------------------------------------------------------
 -- Backup
