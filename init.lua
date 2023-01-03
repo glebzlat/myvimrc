@@ -139,9 +139,32 @@ safe_require(
   end
 )
 
--- Lspconfig -----------------------------------------------------------------
+-- Arduino -------------------------------------------------------------------
 
-local arduino_ok, arduino = pcall(require, "arduino")
+local arduino_ok, arduino = false, nil
+safe_require("arduino", function(arduinonvim)
+  arduino_ok = true
+  arduino = arduinonvim
+
+  arduinonvim.setup {
+    -- arduino_config_dir = arduinonvim.get_arduinocli_datapath(),
+    arduino_config_dir = "/home/dave/.arduino15"
+  }
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "ArduinoFqbnReset",
+    callback = function() vim.cmd "LspRestart" end,
+  })
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "ArduinoOnNewConfig",
+    callback = function()
+      vim.notify("Hello", vim.log.levels.ERROR)
+      vim.cmd "LspStop clangd"
+    end,
+  })
+end)
+-- Lspconfig -----------------------------------------------------------------
 
 local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 default_capabilities.textDocument.completion.completionItem.snippetSupport =
@@ -267,6 +290,8 @@ safe_require("lspconfig", function(lspconfig)
   end
 end)
 
+-- formatter.nvim ------------------------------------------------------------
+
 safe_require("formatter", function(formatter)
   formatter.setup {
     logging = true,
@@ -277,24 +302,18 @@ safe_require("formatter", function(formatter)
         function()
           return {
             exe = path.concat { mason_bin_dir, "stylua" },
+            -- stdin = true,
+            -- try_node_modules = true,
           }
         end,
       },
 
       cpp = {
-        function()
-          return {
-            exe = path.concat { mason_bin_dir, "clang-format" },
-          }
-        end,
+        require "formatter.defaults.clangformat",
       },
 
       c = {
-        function()
-          return {
-            exe = path.concat { mason_bin_dir, "clang-format" },
-          }
-        end,
+        require "formatter.defaults.clangformat",
       },
 
       ["*"] = {
@@ -383,9 +402,9 @@ safe_require("telescope", function(telescope)
     extensions = {
       file_browser = {
         dir_icon = "‣",
-        hidden = true
-      }
-    }
+        hidden = true,
+      },
+    },
   }
   pcall(telescope.load_extension, "file_browser")
 
