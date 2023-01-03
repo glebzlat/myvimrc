@@ -382,7 +382,8 @@ safe_require("telescope", function(telescope)
     theme = "ivy",
     extensions = {
       file_browser = {
-        dir_icon = "‣"
+        dir_icon = "‣",
+        hidden = true
       }
     }
   }
