@@ -39,8 +39,9 @@ packer.startup(function(use)
   use "glepnir/dashboard-nvim"
 
   -- code tools
-  use "gpanders/editorconfig.nvim"
-  use "numToStr/Comment.nvim"
+  -- use "gpanders/editorconfig.nvim"
+  use { "tpope/vim-sleuth", tag = "v2.0" }
+  use {"numToStr/Comment.nvim", tag = "v0.7.0" }
   use "mhartington/formatter.nvim"
   use "folke/trouble.nvim"
 
