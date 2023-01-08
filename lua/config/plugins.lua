@@ -29,7 +29,7 @@ packer.startup(function(use)
   use "wbthomason/packer.nvim"
 
   -- theme
-  use "nlknguyen/papercolor-theme"
+  use (require "plugin.colorscheme")
 
   -- look
   use "crispgm/nvim-tabline"
@@ -41,23 +41,16 @@ packer.startup(function(use)
   -- code tools
   -- use "gpanders/editorconfig.nvim"
   use { "tpope/vim-sleuth", tag = "v2.0" }
-  use {"numToStr/Comment.nvim", tag = "v0.7.0" }
+  use { "numToStr/Comment.nvim", tag = "v0.7.0" }
   use "mhartington/formatter.nvim"
   use "folke/trouble.nvim"
 
-  -- treesitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    tag = "v0.8.1",
-    run = function()
-      -- require 'nvim-treesitter.install'.update { with_sync = true }
-      vim.cmd [[ TSUpdate ]]
-    end,
-  }
+  use (require "plugin.treesitter")
 
   -- utility
   use "powerman/vim-plugin-ruscmd"
   use "dstein64/vim-startuptime"
+  use (require "plugin.toggleterm")
 
   -- lspconfig and additional tools
 
@@ -77,7 +70,10 @@ packer.startup(function(use)
   use "hrsh7th/cmp-buffer"
   use "hrsh7th/cmp-cmdline"
 
-  use "edKotinsky/arduino.nvim"
+  use {
+    "edKotinsky/arduino.nvim",
+    branch = "dev",
+  }
 
   use {
     "nvim-telescope/telescope.nvim",
