@@ -77,16 +77,31 @@ safe_require("mason", function(mason)
     install_root_dir = mason_root_dir,
   }
 
-  -- Is mason really has not something like 'ensure_installed'?
+  -- TODO: switch to null-ls
   local registry = require "mason-registry"
 
-  if not registry.is_installed "clang-format" then
-    vim.cmd [[ MasonInstall clang-format ]]
+  ---mason ensure_installed
+  ---@param packages table
+  function registry:ensure_installed(packages)
+    for _, package in ipairs(packages) do
+      local version = nil
+      if type(package) == "table" then
+        version = package["version"]
+        package = package[1]
+      end
+      if self.has_package(package) and not self.is_installed(package) then
+        local pkg = self.get_package(package)
+        pkg:install(version)
+        -- vim.cmd("MasonInstall " .. package)
+      end
+    end
   end
 
-  if not registry.is_installed "stylua" then
-    vim.cmd [[ MasonInstall stylua ]]
-  end
+  registry:ensure_installed {
+    "clang-format",
+    { "stylua", version = "v0.15.3" },
+    "autopep8",
+  }
 end)
 
 -- mason-lspconfig -----------------------------------------------------------
@@ -249,20 +264,11 @@ safe_require("lspconfig", function(lspconfig)
     capabilities = default_capabilities,
     flags = lsp_flags,
   }
-
-  if arduino_ok then
-    lspconfig["arduino_language_server"].setup {
-      on_attach = on_attach,
-      capabilities = default_capabilities,
-      flags = lsp_flags,
-      on_new_config = arduino.on_new_config,
-      filetypes = { "arduino" },
-    }
-  end
 end)
 
 -- formatter.nvim ------------------------------------------------------------
 
+-- TODO: migrate to null-ls
 safe_require("formatter", function(formatter)
   formatter.setup {
     logging = true,
@@ -285,6 +291,17 @@ safe_require("formatter", function(formatter)
 
       c = {
         require "formatter.defaults.clangformat",
+      },
+
+      python = {
+        function()
+          return {
+            -- TODO: switch to null-ls
+            exe = path.concat { mason_bin_dir, "autopep8" },
+            args = { "-" },
+            stdin = 1,
+          }
+        end,
       },
 
       ["*"] = {
@@ -383,14 +400,14 @@ safe_require("trouble", function(trouble)
     fold_closed = ">", -- icon used for closed folds
     indent_lines = false, -- add an indent guide below the fold icons
     signs = {
-        -- icons / text used for a diagnostic
-        error = "Error",
-        warning = "Warn",
-        hint = "Hint",
-        information = "Info"
+      -- icons / text used for a diagnostic
+      error = "Error",
+      warning = "Warn",
+      hint = "Hint",
+      information = "Info",
     },
-    use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
-}
+    use_diagnostic_signs = false, -- enabling this will use the signs defined in your lsp client
+  }
 end)
 
 -------------------------------------------------------------------------------
@@ -435,7 +452,7 @@ safe_require("dashboard", function(db)
     },
     {
       desc = "Open terminal",
-      action = "ToggleTerm"
-    }
+      action = "ToggleTerm",
+    },
   }
 end)
