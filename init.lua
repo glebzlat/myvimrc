@@ -106,165 +106,49 @@ end)
 
 -- mason-lspconfig -----------------------------------------------------------
 
-safe_require(
-  "mason-lspconfig",
-  function(mason)
-    mason.setup {
-      ensure_installed = {
-        "clangd",
-        "cmake",
-        "pylsp",
-        "cssls",
-        "html",
-        "bashls",
-        "sumneko_lua",
-        "arduino_language_server",
-      },
-    }
-  end
-)
+-- safe_require(
+--   "mason-lspconfig",
+--   function(mason)
+--     mason.setup {
+--       ensure_installed = {
+--         "clangd",
+--         "cmake",
+--         "pylsp",
+--         "cssls",
+--         "html",
+--         "bashls",
+--         "sumneko_lua",
+--         "arduino_language_server",
+--       },
+--     }
+--   end
+-- )
 
 -- Arduino -------------------------------------------------------------------
 
-local arduino_ok, arduino = false, nil
-safe_require("arduino", function(arduinonvim)
-  arduino_ok = true
-  arduino = arduinonvim
-
-  arduinonvim.setup {
-    arduino_config_dir = arduinonvim.get_arduinocli_datapath(),
-    -- arduino_config_dir = "/home/dave/.arduino15",
-  }
-
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "ArduinoFqbnReset",
-    callback = function() vim.cmd "LspRestart" end,
-  })
-
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "ArduinoOnNewConfig",
-    callback = function()
-      vim.notify("Hello", vim.log.levels.ERROR)
-      vim.cmd "LspStop clangd"
-    end,
-  })
-end)
-
--- Lspconfig -----------------------------------------------------------------
-
-local default_capabilities = vim.lsp.protocol.make_client_capabilities()
-default_capabilities.textDocument.completion.completionItem.snippetSupport =
-  true
-
-local lsp_flags = { debounce_text_changes = 150 }
-
-local on_attach = function(_, bufnr)
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
-  map("n", "<leader><leader>ca", vim.lsp.buf.code_action, bufopts)
-  map("n", "<leader>gD", vim.lsp.buf.declaration, bufopts)
-  map("n", "<leader>gd", vim.lsp.buf.definition, bufopts)
-  map("n", "<leader>K", vim.lsp.buf.hover, bufopts)
-  map("n", "<leader>gi", vim.lsp.buf.implementation, bufopts)
-  map("n", "<leader>tD", vim.lsp.buf.type_definition, bufopts)
-  map("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
-  map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-  map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-  map(
-    "n",
-    "<leader>wl",
-    function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-    bufopts
-  )
-  map("n", "<leader><C-k>", vim.lsp.buf.signature_help, bufopts)
-  map(
-    "n",
-    "<leader>bf",
-    function() vim.lsp.buf.format { async = true } end,
-    bufopts
-  )
-
-  local folding_ok, folding = pcall(require, "folding")
-  if folding_ok then folding.on_attach() end
-end
-
-local on_attach_with_format = function(client, bufnr)
-  on_attach(client, bufnr)
-  local format_ok, format = pcall(require, "lsp-format")
-  if format_ok then format.on_attach(client) end
-end
-
-local opts = { noremap = true, silent = true }
-map("n", "<leader><leader>e", vim.diagnostic.open_float, opts)
-
-safe_require("lspconfig", function(lspconfig)
-  lspconfig["clangd"].setup {
-    cmd = { "clangd", "--completion-style=detailed" },
-    filetypes = { "c", "cpp" },
-    on_attach = on_attach,
-    capabilities = default_capabilities,
-    flags = lsp_flags,
-  }
-
-  lspconfig["sumneko_lua"].setup {
-    on_attach = on_attach,
-    capabilities = default_capabilities,
-    flags = lsp_flags,
-    settings = {
-      Lua = {
-        runtime = {
-          version = "LuaJIT",
-        },
-        diagnostics = {
-          globals = { "vim", "use" },
-        },
-        workspace = {
-          library = vim.api.nvim_get_runtime_file("", true),
-          checkThirdParty = false,
-        },
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-  }
-
-  lspconfig["cmake"].setup {
-    on_attach = on_attach_with_format,
-    capabilities = default_capabilities,
-    flags = lsp_flags,
-  }
-
-  -- Python
-  lspconfig["pylsp"].setup {
-    on_attach = on_attach_with_format,
-    capabilities = default_capabilities,
-    flags = lsp_flags,
-    settings = {
-      pylsp = {
-        plugins = {
-          pycodestyle = {
-            ignore = { "W391" },
-            maxLineLength = 100,
-          },
-        },
-      },
-    },
-  }
-
-  -- HTML
-  lspconfig["html"].setup {
-    on_attach = on_attach_with_format,
-    capabilities = default_capabilities,
-    flags = lsp_flags,
-  }
-
-  -- CSS
-  lspconfig["cssls"].setup {
-    on_attach = on_attach_with_format,
-    capabilities = default_capabilities,
-    flags = lsp_flags,
-  }
-end)
+-- local arduino_ok, arduino = false, nil
+-- safe_require("arduino", function(arduinonvim)
+--   arduino_ok = true
+--   arduino = arduinonvim
+--
+--   arduinonvim.setup {
+--     arduino_config_dir = arduinonvim.get_arduinocli_datapath(),
+--     -- arduino_config_dir = "/home/dave/.arduino15",
+--   }
+--
+--   vim.api.nvim_create_autocmd("User", {
+--     pattern = "ArduinoFqbnReset",
+--     callback = function() vim.cmd "LspRestart" end,
+--   })
+--
+--   vim.api.nvim_create_autocmd("User", {
+--     pattern = "ArduinoOnNewConfig",
+--     callback = function()
+--       vim.notify("Hello", vim.log.levels.ERROR)
+--       vim.cmd "LspStop clangd"
+--     end,
+--   })
+-- end)
 
 -- formatter.nvim ------------------------------------------------------------
 

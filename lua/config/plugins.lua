@@ -54,14 +54,15 @@ packer.startup(function(use)
 
   -- lspconfig and additional tools
 
-  use {
-    "neovim/nvim-lspconfig",
-    tag = "v0.1.4",
-    requires = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
-  }
+  -- use {
+  --   "neovim/nvim-lspconfig",
+  --   tag = "v0.1.4",
+  --   requires = {
+  --     "williamboman/mason.nvim",
+  --     "williamboman/mason-lspconfig.nvim",
+  --   },
+  -- }
+  use (require "plugin.lsp")
 
   use { "hrsh7th/nvim-cmp", requires = { "hrsh7th/cmp-nvim-lsp" } }
 
