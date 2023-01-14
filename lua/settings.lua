@@ -11,7 +11,7 @@ syntax enable
 
 global("mapleader", ";")
 
-option.termguicolors = false
+option.termguicolors = true
 
 option.mouse = "a"
 option.encoding = "utf-8"
