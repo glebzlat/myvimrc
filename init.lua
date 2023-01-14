@@ -32,6 +32,7 @@ packer.startup(function(use)
   use "lewis6991/gitsigns.nvim"
   use "lukas-reineke/indent-blankline.nvim"
 
+  use(require "plugin.reach")
   use(require "plugin.mason")
   use(require "plugin.colorscheme")
   use(require "plugin.hardline")
