@@ -1,6 +1,9 @@
 local option = vim.opt
 local global = vim.api.nvim_set_var
 
+-- Open help in a new tab
+vim.cmd "cabbrev th tab h"
+
 vim.cmd [[
 filetype indent plugin on
 syntax enable
@@ -46,4 +49,32 @@ vim.cmd [[
 autocmd FileType cpp,arduino,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
 ]]
 
+local map = vim.keymap.set
+local default_map = { silent = true, noremap = true }
 
+map("n", "<leader>l", "<cmd>tabnext<cr>", default_map)
+map("n", "<leader>k", "<cmd>tabprevious<cr>", default_map)
+map("n", "<leader>c", "<cmd>tabclose<cr>", default_map)
+map("n", "<leader>n", "<cmd>tabnew<cr>", default_map)
+map("n", "<leader>1", "1gt", default_map)
+map("n", "<leader>2", "2gt", default_map)
+map("n", "<leader>3", "3gt", default_map)
+map("n", "<leader>4", "4gt", default_map)
+map("n", "<leader>5", "5gt", default_map)
+map("n", "<leader>6", "6gt", default_map)
+map("n", "<leader>7", "7gt", default_map)
+map("n", "<leader>8", "8gt", default_map)
+map("n", "<leader>9", "9gt", default_map)
+map("n", "<leader>0", "<cmd>tablast<cr>", default_map)
+
+-- local mason_bin_prefix = require("mason-core.path").bin_prefix
+
+local function get_backup_directory()
+  local dir = vim.fn.stdpath "data" .. "/backup"
+  if vim.fn.isdirectory(dir) ~= 1 then vim.fn.mkdir(dir, "p", "0700") end
+  return dir
+end
+
+option.backup = true
+option.backupdir = get_backup_directory()
+option.backupcopy = "yes" -- Make a copy and overwrite the original file

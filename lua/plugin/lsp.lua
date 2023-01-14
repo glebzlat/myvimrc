@@ -99,14 +99,6 @@ return {
       clangd = function(server_name)
         lspconfig[server_name].setup {
           cmd = { "clangd", "--completion-style=detailed" },
-          filetypes = { "c", "cpp" },
-          on_attach = on_attach,
-          capabilities = default_capabilities,
-          flags = lsp_flags,
-        }
-      end,
-      cmake = function(server_name)
-        lspconfig[server_name].setup {
           on_attach = on_attach,
           capabilities = default_capabilities,
           flags = lsp_flags,
@@ -130,19 +122,5 @@ return {
         }
       end,
     }
-
-    -- -- HTML
-    -- lspconfig["html"].setup {
-    --   on_attach = on_attach_with_format,
-    --   capabilities = default_capabilities,
-    --   flags = lsp_flags,
-    -- }
-    --
-    -- -- CSS
-    -- lspconfig["cssls"].setup {
-    --   on_attach = on_attach_with_format,
-    --   capabilities = default_capabilities,
-    --   flags = lsp_flags,
-    -- }
   end,
 }
