@@ -29,11 +29,15 @@ packer.startup(function(use)
 
   use "powerman/vim-plugin-ruscmd"
   use "dstein64/vim-startuptime"
-  use "lewis6991/gitsigns.nvim"
   use "lukas-reineke/indent-blankline.nvim"
+  use "vim-scripts/DoxygenToolkit.vim"
+  use { "lewis6991/gitsigns.nvim", tag = "v0.6" }
+  use {
+    "williamboman/mason-lspconfig.nvim",
+  }
 
   use(require "plugin.reach")
-  use(require "plugin.mason")
+  -- use(require "plugin.mason")
   use(require "plugin.colorscheme")
   use(require "plugin.hardline")
   use(require "plugin.dashboard")
@@ -45,6 +49,7 @@ packer.startup(function(use)
   use(require "plugin.cmp")
   use(require "plugin.telescope")
   use(require "plugin.indent-tools")
+  use(require "plugin.neogen")
 
   use { "tpope/vim-sleuth", tag = "v2.0" }
   use {
@@ -58,7 +63,7 @@ packer.startup(function(use)
   }
 
   use {
-    "edKotinsky/arduino.nvim",
+    "edKotinsky/Arduino.nvim",
     branch = "dev",
   }
 
@@ -81,5 +86,3 @@ vim.cmd [[
     autocmd BufWritePost init.lua source <afile> | PackerCompile
   augroup end
 ]]
-
-

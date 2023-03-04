@@ -1,5 +1,6 @@
 return {
   "glepnir/dashboard-nvim",
+  commit = "5ccce7b50c8ce81c01956864ff51b455ee6933c4",
   config = function()
     local db = require "dashboard"
     db.custom_header = {

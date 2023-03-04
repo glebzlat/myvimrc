@@ -29,6 +29,7 @@ return {
     registry:ensure_installed {
       "clang-format",
       { "stylua", version = "v0.15.3" },
+      "prettier",
     }
 
     require("formatter").setup {
@@ -38,11 +39,6 @@ return {
 
         lua = {
           require("formatter.filetypes.lua").stylua,
-          -- function()
-          --   return {
-          --     exe = mason_bin_prefix "stylua",
-          --   }
-          -- end,
         },
 
         cpp = {
@@ -55,6 +51,14 @@ return {
 
         ["*"] = {
           require("formatter.filetypes.any").remove_trailing_whitespace,
+        },
+
+        css = {
+          require "formatter.defaults.prettier",
+        },
+
+        html = {
+          require "formatter.defaults.prettier",
         },
       },
     }

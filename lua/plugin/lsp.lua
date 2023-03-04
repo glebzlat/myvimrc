@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  tag = "v0.1.4",
+  -- tag = "v0.1.4",
   requires = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
@@ -40,18 +40,22 @@ return {
       )
     end
 
-    -- local on_attach_with_format = function(client, bufnr)
-    --   on_attach(client, bufnr)
-    --   local format_ok, format = pcall(require, "lsp-format")
-    --   if format_ok then format.on_attach(client) end
-    -- end
-
     local opts = { noremap = true, silent = true }
     map("n", "<leader><leader>e", vim.diagnostic.open_float, opts)
 
     local lspconfig = require "lspconfig"
     local mason_lsp = require "mason-lspconfig"
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+    require("mason").setup {
+      ui = {
+        icons = {
+          package_installed = "+",
+          package_pending = ">",
+          package_uninstalled = "-",
+        },
+      },
+    }
 
     mason_lsp.setup {
       ensure_installed = {
@@ -61,7 +65,7 @@ return {
         "cssls",
         "html",
         "bashls",
-        "sumneko_lua",
+        "lua_ls",
       },
     }
 
@@ -72,8 +76,8 @@ return {
           on_attach = on_attach,
         }
       end,
-      sumneko_lua = function(server_name)
-        lspconfig[server_name].setup {
+      lua_ls = function()
+        lspconfig.lua_ls.setup {
           on_attach = on_attach,
           capabilities = capabilities,
           flags = lsp_flags,
@@ -118,6 +122,22 @@ return {
                 },
               },
             },
+          },
+        }
+      end,
+      ["html"] = function(server_name)
+        lspconfig[server_name].setup {
+          filetypes = { "html", "xhtml" },
+          on_attach = on_attach,
+          capabilities = default_capabilities,
+          flags = lsp_flags,
+          init_options = {
+            configurationSection = { "html", "css", "javascript" },
+            embeddedLanguages = {
+              css = true,
+              javascript = true,
+            },
+            provideFormatter = true,
           },
         }
       end,
