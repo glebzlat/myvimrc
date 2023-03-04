@@ -29,7 +29,7 @@ return {
     registry:ensure_installed {
       "clang-format",
       { "stylua", version = "v0.15.3" },
-      "prettier",
+      "prettierd",
     }
 
     require("formatter").setup {
@@ -54,11 +54,11 @@ return {
         },
 
         css = {
-          require "formatter.defaults.prettier",
+          require "formatter.defaults.prettierd",
         },
 
         html = {
-          require "formatter.defaults.prettier",
+          require "formatter.defaults.prettierd",
         },
       },
     }
