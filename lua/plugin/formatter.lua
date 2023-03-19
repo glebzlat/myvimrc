@@ -32,34 +32,40 @@ return {
       "prettier",
     }
 
+    local util = require "formatter.util"
+
+    local function clangformat()
+      return {
+        exe = "clang-format",
+        args = {
+          "-assume-filename",
+          util.escape_path(util.get_current_buffer_file_name()),
+        },
+        stdin = true,
+        try_node_modules = true,
+      }
+    end
+
     require("formatter").setup {
       logging = true,
       log_level = vim.log.levels.WARN,
       filetype = {
 
-        lua = {
-          require("formatter.filetypes.lua").stylua,
-        },
+        lua = { require("formatter.filetypes.lua").stylua },
 
-        cpp = {
-          require "formatter.defaults.clangformat",
-        },
+        cpp = { clangformat },
 
-        c = {
-          require "formatter.defaults.clangformat",
-        },
+        c = { clangformat },
 
         ["*"] = {
           require("formatter.filetypes.any").remove_trailing_whitespace,
         },
 
-        css = {
-          require "formatter.defaults.prettier",
-        },
+        css = { require "formatter.defaults.prettier" },
 
-        html = {
-          require "formatter.defaults.prettier",
-        },
+        html = { require "formatter.defaults.prettier" },
+
+        xhtml = { require "formatter.defaults.prettier" },
       },
     }
     map("n", "<leader>f", "<cmd>Format<cr>", default_map)
