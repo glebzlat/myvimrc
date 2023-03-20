@@ -49,6 +49,7 @@ packer.startup(function(use)
   use(require "plugin.telescope")
   use(require "plugin.indent-tools")
   use(require "plugin.neogen")
+  use(require "plugin.neoclip")
 
   use { "tpope/vim-sleuth", tag = "v2.0" }
   use {
