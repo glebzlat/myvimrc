@@ -57,6 +57,8 @@ return {
 
         c = { clangformat },
 
+        java = { clangformat },
+
         ["*"] = {
           require("formatter.filetypes.any").remove_trailing_whitespace,
         },
