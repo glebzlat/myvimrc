@@ -1,3 +1,8 @@
 # My neovim config
 
-Fully rewritten.
+Requires `Neovim >= v0.8.3`
+
+## Dependencies
+
+- CMake
+- LuaJIT
