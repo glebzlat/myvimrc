@@ -66,6 +66,7 @@ return {
         "html",
         "bashls",
         "lua_ls",
+        "jdtls",
       },
     }
 
@@ -107,6 +108,10 @@ return {
           capabilities = default_capabilities,
           flags = lsp_flags,
         }
+      end,
+      jdtls = function()
+        local java_setup = require("plugin.ls.java")
+        java_setup(lspconfig)
       end,
       ["pylsp"] = function(server_name)
         lspconfig[server_name].setup {
