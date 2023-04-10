@@ -24,10 +24,8 @@ local packer = require "packer"
 
 packer.startup(function(use)
   use "wbthomason/packer.nvim"
-
   use "lewis6991/impatient.nvim"
 
-  use "powerman/vim-plugin-ruscmd"
   use "dstein64/vim-startuptime"
   use "lukas-reineke/indent-blankline.nvim"
   use "vim-scripts/DoxygenToolkit.vim"
