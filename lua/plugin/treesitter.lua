@@ -12,6 +12,8 @@ return {
     require("nvim-treesitter.configs").setup {
       ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
 
+      auto_install = false,
+
       parser_install_dir = ts_path,
 
       highlight = {
