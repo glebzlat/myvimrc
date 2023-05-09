@@ -2,7 +2,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   build = function()
     -- require 'nvim-treesitter.install'.update { with_sync = true }
-    vim.cmd [[ TSUpdate ]]
+    -- vim.cmd [[ TSUpdate ]]
   end,
   config = function()
     local ts_path = tostring(vim.fn.stdpath "data") .. "/ts_parsers"
