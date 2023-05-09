@@ -5,7 +5,7 @@ return {
     vim.cmd [[ TSUpdate ]]
   end,
   config = function()
-    local ts_path = tostring(vim.fn.stdpath "data") .. "ts_parsers"
+    local ts_path = tostring(vim.fn.stdpath "data") .. "/ts_parsers"
 
     vim.opt.runtimepath:append(ts_path) -- parsers directory
 
@@ -20,6 +20,12 @@ return {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
+      playground = {
+        enable = true,
+        disable = {},
+        updatetime = 25,
+        persist_queries = false
+      }
     }
   end,
 }
