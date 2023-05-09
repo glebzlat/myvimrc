@@ -1,8 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   build = function()
-    -- require 'nvim-treesitter.install'.update { with_sync = true }
-    -- vim.cmd [[ TSUpdate ]]
+    require("nvim-treesitter.install").update { with_sync = true }
   end,
   config = function()
     local ts_path = tostring(vim.fn.stdpath "data") .. "/ts_parsers"
@@ -10,9 +9,10 @@ return {
     vim.opt.runtimepath:append(ts_path) -- parsers directory
 
     require("nvim-treesitter.configs").setup {
-      -- ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
+      ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
 
       auto_install = false,
+      sync_install = true,
 
       parser_install_dir = ts_path,
 
