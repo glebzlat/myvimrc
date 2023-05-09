@@ -10,7 +10,7 @@ return {
     vim.opt.runtimepath:append(ts_path) -- parsers directory
 
     require("nvim-treesitter.configs").setup {
-      ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
+      -- ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
 
       auto_install = false,
 
