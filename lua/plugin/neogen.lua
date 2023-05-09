@@ -1,5 +1,7 @@
 return {
   "danymat/neogen",
+  dependencies = "nvim-treesitter/nvim-treesitter",
+  version = "*",
   config = function()
     local map = vim.keymap
     local default_map = { silent = true, noremap = true }
@@ -38,6 +40,4 @@ return {
       default_map
     )
   end,
-  requires = "nvim-treesitter/nvim-treesitter",
-  tag = "*"
 }

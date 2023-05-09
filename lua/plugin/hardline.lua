@@ -1,6 +1,6 @@
 return {
   "ojroques/nvim-hardline",
-  requires = { 
+  dependencies = { 
     {"lewis6991/gitsigns.nvim", version = "v0.6"}
   },
   config = function()

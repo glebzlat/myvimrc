@@ -1,6 +1,6 @@
 return {
   "akinsho/toggleterm.nvim",
-  tag = "*",
+  version = "*",
   config = function()
     require("toggleterm").setup {
       start_in_insert = true,

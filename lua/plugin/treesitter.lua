@@ -1,6 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  run = function()
+  build = function()
     -- require 'nvim-treesitter.install'.update { with_sync = true }
     vim.cmd [[ TSUpdate ]]
   end,

@@ -1,6 +1,6 @@
 return {
   "mhartington/formatter.nvim",
-  requires = {
+  dependencies = {
     "williamboman/mason.nvim",
   },
   config = function()

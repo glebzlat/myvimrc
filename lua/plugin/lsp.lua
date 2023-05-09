@@ -1,7 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   -- tag = "v0.1.4",
-  requires = {
+  dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
   },

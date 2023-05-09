@@ -1,19 +1,21 @@
 return {
   "matveyt/neoclip",
-  run = function()
+  build = function()
     local plugin_path = vim.fn.stdpath "data"
       .. "/site/pack/packer/start/neoclip"
     local plugin_src_path = plugin_path .. "/src"
 
-    local function handler(_, _, event)
+    local function handler(_, data, event)
+      local loglevel = vim.log.levels.INFO
       if event == "stderr" then
-        vim.api.nvim_notify("Error compiling neoclip", vim.log.levels.WARN, {})
+        local msg = "Error compiling neoclip: " .. data .. "\n"
+        vim.api.nvim_notify(msg, loglevel, {})
       elseif "stdout" then
-        vim.api.nvim_notify(
-          "Neoclip compiled successfully",
-          vim.log.levels.INFO,
-          {}
-        )
+        local msg = "Neoclip compiled successfully: " .. data .. "\n"
+        vim.api.nvim_notify(msg, loglevel, {})
+      else
+        local msg = "Neoclip complilation process exited\n"
+        vim.api.nvim_notify(msg, loglevel, {})
       end
     end
 
@@ -22,7 +24,7 @@ return {
       {
         cwd = plugin_src_path,
         on_stdout = handler,
-        on_stderr = handler
+        on_stderr = handler,
       }
     )
   end,
