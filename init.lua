@@ -37,7 +37,6 @@ require("lazy").setup({
   require "plugin.telescope",
   require "plugin.indent-tools",
   require "plugin.neogen",
-  require "plugin.neoclip",
 
   { "tpope/vim-sleuth", version = "v2.0" },
   {

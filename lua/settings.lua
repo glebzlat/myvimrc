@@ -9,6 +9,8 @@ filetype indent plugin on
 syntax enable
 ]]
 
+vim.cmd [[ set clipboard+=unnamedplus ]]
+
 global("mapleader", ";")
 
 option.termguicolors = true
