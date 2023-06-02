@@ -111,6 +111,8 @@ return {
       if not config["document_config"] then return end
 
       local server_exec
+      -- try to get executable name from `server['cmd']` first; if not, get the
+      -- default
       if server["cmd"] then
         server_exec = server["cmd"]
       else
@@ -118,7 +120,7 @@ return {
         if type(server_exec) ~= "table" then
           vim.notify(
             ("lsp setup: executable command not found for %q"):format(name),
-            vim_warn, {}
+            vim_warn
           )
           return
         end
@@ -126,10 +128,30 @@ return {
       server_exec = server_exec[1]
 
       if vim.fn.executable(server_exec) ~= 1 then
-        vim.notify(("lsp setup: %q not found"):format(server_exec), vim_warn)
-        return
+        -- check, if the current file type is in the filetypes list for this
+        -- server; it is supposed to do not print "server is not installed"
+        -- warning if the current filetype is not for the server's language.
+        local filetypes = {}
+        if server["filetypes"] then
+          filetypes = server["filetypes"]
+        else
+          filetypes = config.filetypes
+        end
+
+        local current_filetype = vim.bo.filetype
+        for i in filetypes do
+          if current_filetype == i then
+            vim.notify(
+              ("lsp setup: %q not found"):format(server_exec),
+              vim_warn
+            )
+            return
+          end
+        end
       end
 
+      -- apply default `on_attach`, `capabilities` and `flags` if custom
+      -- not provided
       if not server["on_attach"] then server["on_attach"] = on_attach end
       if not server["capabilities"] then
         server["capabilities"] = capabilities
