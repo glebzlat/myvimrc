@@ -43,10 +43,6 @@ return {
     local opts = { noremap = true, silent = true }
     map("n", "<leader><leader>e", vim.diagnostic.open_float, opts)
 
-    local lspconfig = require "lspconfig"
-    local mason_lsp = require "mason-lspconfig"
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
     require("mason").setup {
       ui = {
         icons = {
@@ -57,95 +53,95 @@ return {
       },
     }
 
-    mason_lsp.setup {
-      ensure_installed = {
-        "clangd",
-        "cmake",
+    require("mason-lspconfig").setup()
+
+    local lspconfig = require "lspconfig"
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+    local servers = {
+      { "clangd", cmd = { "clangd", "--completion-style=detailed" } },
+      { "cmake" },
+      { "cssls" },
+      { "bashls" },
+      {
         "pylsp",
-        "cssls",
-        "html",
-        "bashls",
-        "lua_ls",
-        "jdtls",
+        settings = {
+          pylsp = {
+            plugins = {
+              pycodestyle = { ignore = { "W391" }, maxLineLength = 80 },
+            },
+          },
+        },
       },
+      {
+        "lua_ls",
+        settings = {
+          Lua = {
+            runtime = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim", "use" } },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = { enable = false },
+          },
+        },
+      },
+      {
+        "html",
+        filetypes = { "html", "xhtml" },
+        init_options = {
+          configurationSection = { "html", "css", "javascript" },
+          embeddedLanguages = {
+            css = true,
+            javascript = true,
+          },
+          provideFormatter = true,
+        },
+      },
+      -- TODO: jdtls
     }
 
-    mason_lsp.setup_handlers {
-      function(server_name)
-        lspconfig[server_name].setup {
-          capabilities = capabilities,
-          on_attach = on_attach,
-        }
-      end,
-      lua_ls = function()
-        lspconfig.lua_ls.setup {
-          on_attach = on_attach,
-          capabilities = capabilities,
-          flags = lsp_flags,
-          settings = {
-            Lua = {
-              runtime = {
-                version = "LuaJIT",
-              },
-              diagnostics = {
-                globals = { "vim", "use" },
-              },
-              workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = false,
-              },
-              telemetry = {
-                enable = false,
-              },
-            },
-          },
-        }
-      end,
-      clangd = function(server_name)
-        lspconfig[server_name].setup {
-          cmd = { "clangd", "--completion-style=detailed" },
-          on_attach = on_attach,
-          capabilities = default_capabilities,
-          flags = lsp_flags,
-        }
-      end,
-      jdtls = function()
-        local java_setup = require("plugin.ls.java")
-        java_setup(lspconfig)
-      end,
-      ["pylsp"] = function(server_name)
-        lspconfig[server_name].setup {
-          on_attach = on_attach,
-          capabilities = default_capabilities,
-          flags = lsp_flags,
-          settings = {
-            pylsp = {
-              plugins = {
-                pycodestyle = {
-                  ignore = { "W391" },
-                  maxLineLength = 100,
-                },
-              },
-            },
-          },
-        }
-      end,
-      ["html"] = function(server_name)
-        lspconfig[server_name].setup {
-          filetypes = { "html", "xhtml" },
-          on_attach = on_attach,
-          capabilities = default_capabilities,
-          flags = lsp_flags,
-          init_options = {
-            configurationSection = { "html", "css", "javascript" },
-            embeddedLanguages = {
-              css = true,
-              javascript = true,
-            },
-            provideFormatter = true,
-          },
-        }
-      end,
-    }
+    local vim_warn = vim.log.levels.WARN
+
+    for _, server in pairs(servers) do
+      local config = lspconfig[server[1]]
+      local name = server[1]
+
+      if not config["document_config"] then return end
+
+      local server_exec
+      if server["cmd"] then
+        server_exec = server["cmd"]
+      else
+        server_exec = config.document_config.default_config.cmd
+        if type(server_exec) ~= "table" then
+          vim.notify(
+            ("lsp setup: executable command not found for %q"):format(name),
+            vim_warn, {}
+          )
+          return
+        end
+      end
+      server_exec = server_exec[1]
+
+      if vim.fn.executable(server_exec) ~= 1 then
+        vim.notify(("lsp setup: %q not found"):format(server_exec), vim_warn)
+        return
+      end
+
+      if not server["on_attach"] then server["on_attach"] = on_attach end
+      if not server["capabilities"] then
+        server["capabilities"] = capabilities
+      end
+      if not server["flags"] then server["flags"] = lsp_flags end
+
+      local options = {}
+      for k, v in pairs(server) do
+        if type(k) ~= "number" then options[k] = v end
+      end
+
+      config.setup(options)
+    end
   end,
 }
