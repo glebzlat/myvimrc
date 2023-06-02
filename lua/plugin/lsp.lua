@@ -140,8 +140,8 @@ return {
 
         local current_filetype = vim.bo.filetype
         if filetypes then
-          for i in filetypes do
-            if current_filetype == i then
+          for _, f in ipairs(filetypes) do
+            if current_filetype == f then
               vim.notify(
                 ("lsp setup: %q not found"):format(server_exec),
                 vim_warn
