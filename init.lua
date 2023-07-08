@@ -49,9 +49,20 @@ require("lazy").setup({
     "crispgm/nvim-tabline",
     config = function() require("tabline").setup {} end,
   },
+
   {
     "nlknguyen/papercolor-theme",
-    config = function() vim.cmd [[ colorscheme PaperColor]] end,
+    -- config = function() vim.cmd [[ colorscheme PaperColor]] end,
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    -- config = function() vim.cmd [[ colorscheme gruvbox]] end,
+  },
+  {
+    "Mofiqul/dracula.nvim",
+    priority = 1000,
+    config = function() vim.cmd [[ colorscheme dracula]] end,
   },
 }, {
   lockfile = lazy_lockfile,
