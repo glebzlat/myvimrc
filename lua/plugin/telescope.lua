@@ -12,7 +12,13 @@ return {
     local telescope = require "telescope"
 
     telescope.setup {
-      theme = "ivy",
+      defaults = {
+        mappings = {
+          i = {
+            ["<C-h>"] = "which_key",
+          },
+        },
+      },
       extensions = {
         file_browser = {
           dir_icon = "‣",
