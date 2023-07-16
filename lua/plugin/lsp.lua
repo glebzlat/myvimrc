@@ -58,8 +58,27 @@ return {
     local lspconfig = require "lspconfig"
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+    -- check if esp-idf exported. if so, then specify --query-driver option to
+    -- clangd to avoid errors
+    local esp_idf_path = os.getenv "IDF_PATH"
+    local clang_query_drivers_opt = ""
+    if esp_idf_path ~= nil then
+      clang_query_drivers_opt = "--query-driver=/home/"
+        .. os.getenv "USER"
+        .. "/.espressif/tools/xtensa-esp32-elf/"
+        .. "**/xtensa-esp32-elf/bin/xtensa-esp32-elf-*"
+    end
+
     local servers = {
-      { "clangd", cmd = { "clangd", "--completion-style=detailed" } },
+      {
+        "clangd",
+        cmd = {
+          "clangd",
+          "--completion-style=detailed",
+          "--enable-config",
+          clang_query_drivers_opt,
+        },
+      },
       { "cmake" },
       { "cssls" },
       { "bashls" },
