@@ -61,7 +61,7 @@ return {
     -- check if esp-idf exported. if so, then specify --query-driver option to
     -- clangd to avoid errors
     local esp_idf_path = os.getenv "IDF_PATH"
-    local clang_query_drivers_opt = ""
+    local clang_query_drivers_opt = nil
     if esp_idf_path ~= nil then
       clang_query_drivers_opt = "--query-driver=/home/"
         .. os.getenv "USER"
