@@ -1,6 +1,5 @@
 return {
   "neovim/nvim-lspconfig",
-  -- tag = "v0.1.4",
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
@@ -118,12 +117,17 @@ return {
           provideFormatter = true,
         },
       },
-      -- TODO: jdtls
+      {
+        "custom_elements_ls",
+      },
+      {
+        "phpactor",
+      },
     }
 
     local vim_warn = vim.log.levels.WARN
 
-    for _, server in pairs(servers) do
+    for _, server in ipairs(servers) do
       local config = lspconfig[server[1]]
       local name = server[1]
 
@@ -145,31 +149,6 @@ return {
         end
       end
       server_exec = server_exec[1]
-
-      if vim.fn.executable(server_exec) ~= 1 then
-        -- check, if the current file type is in the filetypes list for this
-        -- server; it is supposed to do not print "server is not installed"
-        -- warning if the current filetype is not for the server's language.
-        local filetypes = {}
-        if server["filetypes"] then
-          filetypes = server["filetypes"]
-        else
-          filetypes = config.filetypes
-        end
-
-        local current_filetype = vim.bo.filetype
-        if filetypes then
-          for _, f in ipairs(filetypes) do
-            if current_filetype == f then
-              vim.notify(
-                ("lsp setup: %q not found"):format(server_exec),
-                vim_warn
-              )
-              return
-            end
-          end
-        end
-      end
 
       -- apply default `on_attach`, `capabilities` and `flags` if custom
       -- not provided

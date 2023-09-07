@@ -39,6 +39,8 @@ require("lazy").setup({
   require "plugin.neogen",
   require "plugin.symbol-outline",
 
+  { "mfussenegger/nvim-jdtls" },
+
   { "tpope/vim-sleuth", version = "v2.0" },
   {
     "numToStr/Comment.nvim",
