@@ -5,13 +5,30 @@ return {
     "williamboman/mason-lspconfig.nvim",
   },
   config = function()
+    -- all the servers
+    -- servers that require custom properties are placed into
+    -- 'lua/language-servers' directory for brevity
+    local servers = {
+      require "language-servers.clangd",
+      require "language-servers.pylsp",
+      require "language-servers.lua_ls",
+      require "language-servers.html",
+      { "cmake" },
+      { "cssls" },
+      { "bashls" },
+      { "custom_elements_ls" },
+      { "phpactor" },
+    }
+
     local map = vim.keymap.set
+    local vim_warn = vim.log.levels.WARN
 
-    local default_capabilities = vim.lsp.protocol.make_client_capabilities()
-    default_capabilities.textDocument.completion.completionItem.snippetSupport =
-      true
-
-    local lsp_flags = { debounce_text_changes = 150 }
+    map(
+      "n",
+      "<leader><leader>e",
+      vim.diagnostic.open_float,
+      { noremap = true, silent = true }
+    )
 
     local on_attach = function(_, bufnr)
       local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -39,94 +56,11 @@ return {
       )
     end
 
-    local opts = { noremap = true, silent = true }
-    map("n", "<leader><leader>e", vim.diagnostic.open_float, opts)
-
-    require("mason").setup {
-      ui = {
-        icons = {
-          package_installed = "+",
-          package_pending = ">",
-          package_uninstalled = "-",
-        },
-      },
-    }
-
-    require("mason-lspconfig").setup()
-
     local lspconfig = require "lspconfig"
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local lsp_flags = { debounce_text_changes = 150 }
 
-    -- check if esp-idf exported. if so, then specify --query-driver option to
-    -- clangd to avoid errors
-    local esp_idf_path = os.getenv "IDF_PATH"
-    local clang_query_drivers_opt = nil
-    if esp_idf_path ~= nil then
-      clang_query_drivers_opt = "--query-driver="
-        .. os.getenv "HOME"
-        .. "/.espressif/tools/xtensa-esp32-elf/"
-        .. "**/xtensa-esp32-elf/bin/xtensa-esp32-elf-*"
-    end
-
-    local servers = {
-      {
-        "clangd",
-        cmd = {
-          "clangd",
-          "--completion-style=detailed",
-          "--enable-config",
-          clang_query_drivers_opt,
-        },
-      },
-      { "cmake" },
-      { "cssls" },
-      { "bashls" },
-      {
-        "pylsp",
-        settings = {
-          pylsp = {
-            plugins = {
-              pycodestyle = { ignore = { "W391" }, maxLineLength = 80 },
-            },
-          },
-        },
-      },
-      {
-        "lua_ls",
-        settings = {
-          Lua = {
-            runtime = { version = "LuaJIT" },
-            diagnostics = { globals = { "vim", "use" } },
-            workspace = {
-              library = vim.api.nvim_get_runtime_file("", true),
-              checkThirdParty = false,
-            },
-            telemetry = { enable = false },
-          },
-        },
-      },
-      {
-        "html",
-        filetypes = { "html", "xhtml" },
-        init_options = {
-          configurationSection = { "html", "css", "javascript" },
-          embeddedLanguages = {
-            css = true,
-            javascript = true,
-          },
-          provideFormatter = true,
-        },
-      },
-      {
-        "custom_elements_ls",
-      },
-      {
-        "phpactor",
-      },
-    }
-
-    local vim_warn = vim.log.levels.WARN
-
+    -- iterate over language servers and call setup for each
     for _, server in ipairs(servers) do
       local config = lspconfig[server[1]]
       local name = server[1]

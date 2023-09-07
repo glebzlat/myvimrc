@@ -23,7 +23,6 @@ require("lazy").setup({
   "lukas-reineke/indent-blankline.nvim",
   "vim-scripts/DoxygenToolkit.vim",
   { "lewis6991/gitsigns.nvim", tag = "v0.6" },
-  "williamboman/mason-lspconfig.nvim",
 
   require "plugin.reach",
   require "plugin.hardline",
@@ -38,6 +37,26 @@ require("lazy").setup({
   require "plugin.indent-tools",
   require "plugin.neogen",
   require "plugin.symbol-outline",
+
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup {
+        ui = {
+          icons = {
+            package_installed = "+",
+            package_pending = ">",
+            package_uninstalled = "-",
+          },
+        },
+      }
+    end,
+  },
+
+  {
+    "williamboman/mason-lspconfig.nvim",
+    config = function() require("mason-lspconfig").setup() end,
+  },
 
   { "mfussenegger/nvim-jdtls" },
 
