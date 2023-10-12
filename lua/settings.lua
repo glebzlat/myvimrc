@@ -80,3 +80,8 @@ end
 option.backup = true
 option.backupdir = get_backup_directory()
 option.backupcopy = "yes" -- Make a copy and overwrite the original file
+
+-- denols
+vim.g.markdown_fenced_languages = {
+  "ts=typescript"
+}

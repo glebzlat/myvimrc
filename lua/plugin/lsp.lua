@@ -13,10 +13,11 @@ return {
       require "language-servers.pylsp",
       require "language-servers.lua_ls",
       require "language-servers.html",
+      require "language-servers.emmet",
+      require "language-servers.denols",
       { "cmake" },
       { "cssls" },
       { "bashls" },
-      { "custom_elements_ls" },
       { "phpactor" },
     }
 
