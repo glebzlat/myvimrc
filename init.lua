@@ -1,5 +1,6 @@
 -- pcall(require, "impatient")
 require "settings"
+require "utilities"
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
