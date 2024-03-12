@@ -1,6 +1,4 @@
--- pcall(require, "impatient")
 require "settings"
-require "utilities"
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -18,8 +16,6 @@ vim.opt.rtp:prepend(lazypath)
 local lazy_lockfile = vim.fn.stdpath "data" .. "/lazy-lock.json"
 
 require("lazy").setup({
-  "lewis6991/impatient.nvim",
-
   "dstein64/vim-startuptime",
   "lukas-reineke/indent-blankline.nvim",
   "vim-scripts/DoxygenToolkit.vim",
