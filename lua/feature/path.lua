@@ -1,3 +1,5 @@
+-- taken from here: https://github.com/williamboman/mason.nvim
+
 local sep = (function()
     ---@diagnostic disable-next-line: undefined-global
     if jit then
