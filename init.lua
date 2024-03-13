@@ -57,6 +57,8 @@ require("lazy").setup({
 
   { "mfussenegger/nvim-jdtls" },
 
+  { "folke/neodev.nvim", opts = {} },
+
   { "tpope/vim-sleuth", version = "v2.0" },
   {
     "numToStr/Comment.nvim",
