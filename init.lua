@@ -72,17 +72,15 @@ require("lazy").setup({
 
   {
     "nlknguyen/papercolor-theme",
-    -- config = function() vim.cmd [[ colorscheme PaperColor]] end,
+    priority = 1000,
   },
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
-    -- config = function() vim.cmd [[ colorscheme gruvbox]] end,
   },
   {
     "Mofiqul/dracula.nvim",
     priority = 1000,
-    config = function() vim.cmd [[ colorscheme dracula]] end,
   },
 }, {
   lockfile = lazy_lockfile,
@@ -112,3 +110,7 @@ require("lazy").setup({
     },
   },
 })
+
+
+local cs_saver = require "feature.colorscheme-saver"
+cs_saver.setup()
