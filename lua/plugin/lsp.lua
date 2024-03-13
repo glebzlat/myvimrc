@@ -5,24 +5,10 @@ return {
     "williamboman/mason-lspconfig.nvim",
   },
   config = function()
-    -- all the servers
-    -- servers that require custom properties are placed into
-    -- 'lua/language-servers' directory for brevity
-    local servers = {
-      require "language-servers.clangd",
-      require "language-servers.pylsp",
-      require "language-servers.lua_ls",
-      require "language-servers.html",
-      require "language-servers.emmet",
-      require "language-servers.denols",
-      { "cmake" },
-      { "cssls" },
-      { "bashls" },
-      { "phpactor" },
-    }
+    -- servers configurations are placed here
+    local language_servers = "language-servers"
 
     local map = vim.keymap.set
-    local vim_warn = vim.log.levels.WARN
 
     map(
       "n",
@@ -61,29 +47,16 @@ return {
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local lsp_flags = { debounce_text_changes = 150 }
 
-    -- iterate over language servers and call setup for each
-    for _, server in ipairs(servers) do
-      local config = lspconfig[server[1]]
-      local name = server[1]
+    local path = require "mason-core.path"
+    local language_servers_dir =
+      path.concat { vim.fn.stdpath "config", "lua", language_servers }
+    local fnamemodify = vim.fn.fnamemodify
 
-      if not config["document_config"] then return end
-
-      local server_exec
-      -- try to get executable name from `server['cmd']` first; if not, get the
-      -- default
-      if server["cmd"] then
-        server_exec = server["cmd"]
-      else
-        server_exec = config.document_config.default_config.cmd
-        if type(server_exec) ~= "table" then
-          vim.notify(
-            ("lsp setup: executable command not found for %q"):format(name),
-            vim_warn
-          )
-          return
-        end
-      end
-      server_exec = server_exec[1]
+    -- for each file in language_servers_dir:
+    --   load configuration and setup the server
+    for filename in vim.fs.dir(language_servers_dir) do
+      local module = language_servers .. "." .. fnamemodify(filename, ':r')
+      local server = require(module)
 
       -- apply default `on_attach`, `capabilities` and `flags` if custom
       -- not provided
@@ -93,12 +66,9 @@ return {
       end
       if not server["flags"] then server["flags"] = lsp_flags end
 
-      local options = {}
-      for k, v in pairs(server) do
-        if type(k) ~= "number" then options[k] = v end
-      end
-
-      config.setup(options)
+      local config = lspconfig[server[1]]
+      if not config["document_config"] then return end
+      config.setup(server)
     end
   end,
 }
