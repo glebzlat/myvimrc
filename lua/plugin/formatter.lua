@@ -4,14 +4,16 @@ return {
     "williamboman/mason.nvim",
   },
   config = function()
-    -- local mason_bin_prefix = require("mason-core.path").bin_prefix
     local map = vim.keymap.set
     local default_map = { silent = true, noremap = true }
 
     local registry = require "mason-registry"
 
-    ---mason ensure_installed
+    ---It seems that mason and mason-lspconfig don't provide an "official"
+    ---way to ensure_installed not lsp servers, but formatters. So I've written
+    ---this crutch
     ---@param packages table
+    ---@diagnostic disable-next-line -- "Fields cannot injected into..."
     function registry:ensure_installed(packages)
       for _, package in ipairs(packages) do
         local version = nil
@@ -28,12 +30,14 @@ return {
 
     registry:ensure_installed {
       "clang-format",
-      { "stylua", version = "v0.15.3" },
+      "stylua",
       "prettier",
     }
 
     local util = require "formatter.util"
 
+    --Configuration can be defined as a function
+    --It is needed to pass the function inside the table _without_ calling it
     local function clangformat()
       return {
         exe = "clang-format",
