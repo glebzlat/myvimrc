@@ -57,6 +57,7 @@ require("lazy").setup({
 
   { "mfussenegger/nvim-jdtls" },
 
+  -- TODO: it seems neodev does not work
   { "folke/neodev.nvim", opts = {} },
 
   { "tpope/vim-sleuth", version = "v2.0" },
@@ -65,9 +66,20 @@ require("lazy").setup({
     version = "v0.7.0",
     config = function() require("Comment").setup() end,
   },
+
   {
     "crispgm/nvim-tabline",
     config = function() require("tabline").setup {} end,
+  },
+
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {}
   },
 
   {
