@@ -85,3 +85,9 @@ option.backupcopy = "yes" -- Make a copy and overwrite the original file
 vim.g.markdown_fenced_languages = {
   "ts=typescript"
 }
+
+-- for no-desktop environments
+-- setup https://github.com/ms-jpq/isomorphic_copy
+if vim.fn.getenv("DISPLAY") == vim.NIL then
+  vim.fn.setenv("DISPLAY", "FAKE")
+end
