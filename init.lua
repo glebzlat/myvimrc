@@ -21,85 +21,32 @@ require("lazy").setup({
   "vim-scripts/DoxygenToolkit.vim",
   { "lewis6991/gitsigns.nvim", tag = "v0.6" },
 
-  require("plugin.reach"),
-  require("plugin.hardline"),
-  require("plugin.dashboard"),
+  { "mfussenegger/nvim-jdtls" },
+  { "folke/neodev.nvim", opts = {} },
+  { "tpope/vim-sleuth", version = "v2.0" },
+
+  require("plugin.mason"),
+  require("plugin.mason-lspconfig"),
   require("plugin.trouble"),
+  require("plugin.indent-tools"),
   require("plugin.formatter"),
-  require("plugin.toggleterm"),
   require("plugin.treesitter"),
   require("plugin.lsp"),
   require("plugin.cmp"),
-  require("plugin.telescope"),
-  require("plugin.indent-tools"),
   require("plugin.neogen"),
+  require("plugin.comment"),
+
+  require("plugin.telescope"),
+  require("plugin.reach"),
   require("plugin.symbol-outline"),
+  require("plugin.which-key"),
 
-  {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup({
-        ui = {
-          icons = {
-            package_installed = "+",
-            package_pending = ">",
-            package_uninstalled = "-",
-          },
-        },
-      })
-    end,
-  },
+  require("plugin.dashboard"),
+  require("plugin.hardline"),
+  require("plugin.nvim-tabline"),
+  require("plugin.colorscheme"),
 
-  {
-    "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup()
-    end,
-  },
-
-  { "mfussenegger/nvim-jdtls" },
-
-  -- TODO: it seems neodev does not work
-  { "folke/neodev.nvim", opts = {} },
-
-  { "tpope/vim-sleuth", version = "v2.0" },
-  {
-    "numToStr/Comment.nvim",
-    version = "v0.7.0",
-    config = function()
-      require("Comment").setup()
-    end,
-  },
-
-  {
-    "crispgm/nvim-tabline",
-    config = function()
-      require("tabline").setup({})
-    end,
-  },
-
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
-    opts = {},
-  },
-
-  {
-    "nlknguyen/papercolor-theme",
-    priority = 1000,
-  },
-  {
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000,
-  },
-  {
-    "Mofiqul/dracula.nvim",
-    priority = 1000,
-  },
+  require("plugin.toggleterm"),
 }, {
   lockfile = lazy_lockfile,
   ui = {
