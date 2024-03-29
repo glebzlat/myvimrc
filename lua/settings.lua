@@ -69,17 +69,16 @@ map("n", "<leader>8", "8gt", default_map)
 map("n", "<leader>9", "9gt", default_map)
 map("n", "<leader>0", "<cmd>tablast<cr>", default_map)
 
--- local mason_bin_prefix = require("mason-core.path").bin_prefix
-
 local function get_backup_directory()
   local dir = vim.fn.stdpath "data" .. "/backup"
   if vim.fn.isdirectory(dir) ~= 1 then vim.fn.mkdir(dir, "p", "0700") end
   return dir
 end
 
-option.backup = true
+option.backup = false
+option.writebackup = true
 option.backupdir = get_backup_directory()
-option.backupcopy = "yes" -- Make a copy and overwrite the original file
+option.backupcopy = "auto"
 
 -- denols
 vim.g.markdown_fenced_languages = {
