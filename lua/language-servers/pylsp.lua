@@ -18,9 +18,9 @@ return {
         -- But for now it is hardcoded here.
         jedi = {
           extra_paths = {
-            "/usr/lib64/python3.12/site-packages"
-          }
-        }
+            "/usr/lib64/python3.12/site-packages",
+          },
+        },
       },
     },
   },

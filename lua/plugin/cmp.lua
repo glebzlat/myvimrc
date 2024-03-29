@@ -15,7 +15,7 @@ return {
         and vim.api
             .nvim_buf_get_lines(0, line - 1, line, true)[1]
             :sub(col, col)
-            :match "%s"
+            :match("%s")
           == nil
     end
 
@@ -27,26 +27,28 @@ return {
       )
     end
 
-    local cmp = require "cmp"
-    cmp.setup {
+    local cmp = require("cmp")
+    cmp.setup({
       snippet = {
-        expand = function(args) vim.fn["vsnip#anonymous"](args.body) end,
+        expand = function(args)
+          vim.fn["vsnip#anonymous"](args.body)
+        end,
       },
       window = {
         documentation = cmp.config.window.bordered(),
       },
-      sources = cmp.config.sources {
+      sources = cmp.config.sources({
         { name = "nvim_lsp" },
         { name = "vsnip" },
         { name = "buffer" },
         { name = "path" },
-      },
-      mapping = cmp.mapping.preset.insert {
+      }),
+      mapping = cmp.mapping.preset.insert({
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-p>"] = cmp.mapping.select_prev_item(),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<Cr>"] = cmp.mapping.confirm { select = true },
+        ["<Cr>"] = cmp.mapping.confirm({ select = true }),
 
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
@@ -56,7 +58,9 @@ return {
           elseif has_words_before() then
             cmp.complete()
           else
-            fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+            -- The fallback function sends a already mapped key.
+            -- In this case, it's probably `<Tab>`.
+            fallback()
           end
         end, { "i", "s" }),
 
@@ -67,7 +71,7 @@ return {
             feedkey("<Plug>(vsnip-jump-prev)", "")
           end
         end, { "i", "s" }),
-      },
+      }),
       formatting = {
         fields = {
           "kind",
@@ -84,13 +88,13 @@ return {
           return vim_item
         end,
       },
-    }
+    })
 
     cmp.setup.cmdline(":", {
       mapping = cmp.mapping.preset.cmdline(),
-      sources = cmp.config.sources {
+      sources = cmp.config.sources({
         { name = "cmdline" },
-      },
+      }),
     })
 
     cmp.setup.cmdline({ "/", "?" }, {

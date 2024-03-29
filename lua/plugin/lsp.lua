@@ -17,13 +17,13 @@ return {
       { noremap = true, silent = true }
     )
 
-    local lspconfig = require "lspconfig"
+    local lspconfig = require("lspconfig")
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local lsp_flags = { debounce_text_changes = 150 }
 
-    local path = require "mason-core.path"
+    local path = require("mason-core.path")
     local language_servers_dir =
-      path.concat { vim.fn.stdpath "config", "lua", language_servers }
+      path.concat({ vim.fn.stdpath("config"), "lua", language_servers })
     local fnamemodify = vim.fn.fnamemodify
 
     -- for each file in language_servers_dir:

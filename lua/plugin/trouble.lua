@@ -4,7 +4,7 @@ return {
     local map = vim.keymap
     local default_map = { silent = true, noremap = true }
 
-    require("trouble").setup {
+    require("trouble").setup({
       icons = false,
       fold_open = "v", -- icon used for open folds
       fold_closed = ">", -- icon used for closed folds
@@ -18,7 +18,7 @@ return {
       },
       -- enabling this will use the signs defined in your lsp client
       use_diagnostic_signs = false,
-    }
+    })
 
     map.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", default_map)
   end,

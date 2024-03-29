@@ -5,9 +5,9 @@ return {
       vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true })
     end
 
-    require("reach").setup {
+    require("reach").setup({
       notifications = true,
-    }
+    })
 
     map("n", "<leader>rb", "<cmd>ReachOpen buffers<cr>")
     map("n", "<leader>rt", "<cmd>ReachOpen tabpages<cr>")

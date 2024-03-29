@@ -1,16 +1,16 @@
 -- Colorscheme saver
 
 local log_levels = vim.log.levels
-local path = require "feature.path"
+local path = require("feature.path")
 
 ---@class ColorschemeSaver
 ---@field colorscheme_file string path to a file with the colorscheme data
 ---@field colorscheme string current colorscheme, read from the colorscheme_file
 local M = {
-  colorscheme_file = path.concat {
-    vim.fn.stdpath "data",
+  colorscheme_file = path.concat({
+    vim.fn.stdpath("data"),
     "colorscheme-saver.lua",
-  },
+  }),
 }
 
 ---@return nil|string
@@ -41,10 +41,9 @@ local function _colorscheme_list()
   local scheme_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim")
     .. vim.fn.globpath(vim.o.runtimepath, "colors/*.lua")
   local files_list = vim.fn.split(scheme_files, "\n")
-  local schemes = vim.fn.map(
-    files_list,
-    function(_, v) return vim.fn.fnamemodify(v, ":t:r") end
-  )
+  local schemes = vim.fn.map(files_list, function(_, v)
+    return vim.fn.fnamemodify(v, ":t:r")
+  end)
   return vim.fn.uniq(schemes) ---@diagnostic disable-line
 end
 
@@ -61,7 +60,7 @@ end
 ---@param config? ColorschemeSaverConfig
 function M.setup(config)
   config = config or {}
-  vim.validate { default_scheme = { config.default_scheme, "string", true } }
+  vim.validate({ default_scheme = { config.default_scheme, "string", true } })
 
   local colorscheme = _get_colorscheme()
   if not colorscheme then
@@ -92,7 +91,9 @@ end, {
   desc = "Print or set current colorscheme",
   complete = function(_, cmdline, _)
     local parts = vim.tbl_filter(
-      function(v) return #v > 0 end,
+      function(v)
+        return #v > 0
+      end,
       vim.fn.split(cmdline, " ") ---@diagnostic disable-line
     )
 

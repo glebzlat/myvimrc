@@ -18,7 +18,7 @@ return {
     }
 
     local function footer_val()
-      local lazy = require "lazy"
+      local lazy = require("lazy")
       return {
         string.format("Installed %d plugins", lazy.stats().count),
       }
@@ -101,7 +101,7 @@ return {
       footer = footer,
     }
 
-    require("alpha").setup {
+    require("alpha").setup({
       layout = {
         { type = "padding", val = 2 },
         section.header,
@@ -112,6 +112,6 @@ return {
       opts = {
         margin = 5,
       },
-    }
+    })
   end,
 }

@@ -2,14 +2,14 @@ return {
   "nvim-treesitter/nvim-treesitter",
   "nvim-treesitter/nvim-treesitter-textobjects",
   build = function()
-    require("nvim-treesitter.install").update { with_sync = true }
+    require("nvim-treesitter.install").update({ with_sync = true })
   end,
   config = function()
-    local ts_path = tostring(vim.fn.stdpath "data") .. "/ts_parsers"
+    local ts_path = tostring(vim.fn.stdpath("data")) .. "/ts_parsers"
 
     vim.opt.runtimepath:append(ts_path) -- parsers directory
 
-    require("nvim-treesitter.configs").setup {
+    require("nvim-treesitter.configs").setup({
       ensure_installed = { "cpp", "c", "python", "bash", "ruby", "lua" },
 
       auto_install = false,
@@ -21,6 +21,6 @@ return {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
-    }
+    })
   end,
 }

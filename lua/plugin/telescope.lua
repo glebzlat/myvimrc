@@ -8,9 +8,9 @@ return {
     local map = vim.keymap.set
     local default_map = { silent = true, noremap = true }
 
-    local telescope = require "telescope"
+    local telescope = require("telescope")
 
-    telescope.setup {
+    telescope.setup({
       defaults = {
         mappings = {
           i = {
@@ -24,11 +24,11 @@ return {
           hidden = true,
         },
       },
-    }
+    })
 
     pcall(telescope.load_extension, "file_browser")
 
-    local builtin = require "telescope.builtin"
+    local builtin = require("telescope.builtin")
 
     map("n", "<leader>tf", builtin.find_files, default_map)
     map("n", "<Space>", "<cmd>Telescope file_browser<cr>", default_map)

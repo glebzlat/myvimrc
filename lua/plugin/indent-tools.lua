@@ -2,10 +2,10 @@ return {
   "arsham/indent-tools.nvim",
   dependencies = {
     "arsham/arshlib.nvim",
-    "MunifTanjim/nui.nvim"
+    "MunifTanjim/nui.nvim",
   },
   config = function()
-    require("indent-tools").config {
+    require("indent-tools").config({
       normal = {
         up = "[i",
         down = "]i",
@@ -14,6 +14,6 @@ return {
         ii = "ii",
         ai = "ai",
       },
-    }
+    })
   end,
 }

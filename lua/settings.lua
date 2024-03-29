@@ -2,14 +2,14 @@ local option = vim.opt
 local global = vim.api.nvim_set_var
 
 -- Open help in a new tab
-vim.cmd "cabbrev th tab h"
+vim.cmd("cabbrev th tab h")
 
-vim.cmd [[
+vim.cmd([[
 filetype indent plugin on
 syntax enable
-]]
+]])
 
-vim.cmd [[ set clipboard+=unnamedplus ]]
+vim.cmd([[ set clipboard+=unnamedplus ]])
 
 global("mapleader", ";")
 
@@ -47,9 +47,9 @@ option.ruler = false
 vim.g.tagbar_compact = 1
 
 -- 2 spaces for selected filetypes
-vim.cmd [[
+vim.cmd([[
 autocmd FileType cpp,arduino,html,css,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2
-]]
+]])
 
 local map = vim.keymap.set
 local default_map = { silent = true, noremap = true }
@@ -70,7 +70,7 @@ map("n", "<leader>9", "9gt", default_map)
 map("n", "<leader>0", "<cmd>tablast<cr>", default_map)
 
 local function get_backup_directory()
-  local dir = vim.fn.stdpath "data" .. "/backup"
+  local dir = vim.fn.stdpath("data") .. "/backup"
   if vim.fn.isdirectory(dir) ~= 1 then vim.fn.mkdir(dir, "p", "0700") end
   return dir
 end
@@ -82,11 +82,9 @@ option.backupcopy = "auto"
 
 -- denols
 vim.g.markdown_fenced_languages = {
-  "ts=typescript"
+  "ts=typescript",
 }
 
 -- for no-desktop environments
 -- setup https://github.com/ms-jpq/isomorphic_copy
-if vim.fn.getenv("DISPLAY") == vim.NIL then
-  vim.fn.setenv("DISPLAY", "FAKE")
-end
+if vim.fn.getenv("DISPLAY") == vim.NIL then vim.fn.setenv("DISPLAY", "FAKE") end

@@ -1,10 +1,10 @@
 return {
   "ojroques/nvim-hardline",
-  dependencies = { 
-    {"lewis6991/gitsigns.nvim", version = "v0.6"}
+  dependencies = {
+    { "lewis6991/gitsigns.nvim", version = "v0.6" },
   },
   config = function()
-    require("gitsigns").setup {
+    require("gitsigns").setup({
       signs = {
         add = { text = "│" },
         change = { text = "│" },
@@ -17,9 +17,9 @@ return {
       update_debounce = 100,
       status_formatter = nil, -- Use default
       max_file_length = 40000,
-    }
+    })
 
-    require("hardline").setup {
+    require("hardline").setup({
       bufferline = false,
       bufferline_settings = {
         exclude_terminal = false,
@@ -54,6 +54,6 @@ return {
         },
         { class = "mode", item = require("hardline.parts.line").get_item },
       },
-    }
+    })
   end,
 }

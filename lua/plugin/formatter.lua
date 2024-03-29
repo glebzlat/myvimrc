@@ -7,7 +7,7 @@ return {
     local map = vim.keymap.set
     local default_map = { silent = true, noremap = true }
 
-    local registry = require "mason-registry"
+    local registry = require("mason-registry")
 
     ---It seems that mason and mason-lspconfig don't provide an "official"
     ---way to ensure_installed not lsp servers, but formatters. So I've written
@@ -28,13 +28,13 @@ return {
       end
     end
 
-    registry:ensure_installed {
+    registry:ensure_installed({
       "clang-format",
       "stylua",
       "prettier",
-    }
+    })
 
-    local util = require "formatter.util"
+    local util = require("formatter.util")
 
     --Configuration can be defined as a function
     --It is needed to pass the function inside the table _without_ calling it
@@ -50,7 +50,7 @@ return {
       }
     end
 
-    require("formatter").setup {
+    require("formatter").setup({
       logging = true,
       log_level = vim.log.levels.WARN,
       filetype = {
@@ -67,13 +67,13 @@ return {
           require("formatter.filetypes.any").remove_trailing_whitespace,
         },
 
-        css = { require "formatter.defaults.prettier" },
+        css = { require("formatter.defaults.prettier") },
 
-        html = { require "formatter.defaults.prettier" },
+        html = { require("formatter.defaults.prettier") },
 
-        xhtml = { require "formatter.defaults.prettier" },
+        xhtml = { require("formatter.defaults.prettier") },
       },
-    }
+    })
     map("n", "<leader>f", "<cmd>Format<cr>", default_map)
     map("n", "<leader>F", "<cmd>FormatWrite<cr>", default_map)
   end,
