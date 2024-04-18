@@ -44,9 +44,13 @@ require("lazy").setup({
   require("plugin.dashboard"),
   require("plugin.hardline"),
   require("plugin.nvim-tabline"),
-  require("plugin.colorscheme"),
 
   require("plugin.toggleterm"),
+
+  { "nlknguyen/papercolor-theme", priority = 1000 },
+  { "ellisonleao/gruvbox.nvim", priority = 1000 },
+  { "Mofiqul/dracula.nvim", priority = 1000 },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 }, {
   lockfile = lazy_lockfile,
   ui = {
