@@ -81,6 +81,7 @@ vim.api.nvim_create_user_command("Colorscheme", function(opts)
   if argslen == 0 then
     local colorscheme = _get_colorscheme()
     if not colorscheme then return end
+    print(colorscheme)
   else
     local colorscheme = args
     _write_colorscheme(colorscheme)
