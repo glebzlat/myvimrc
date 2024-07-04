@@ -1,37 +1,74 @@
 return {
   "folke/trouble.nvim",
-  opts = {},
+  opts = {
+    icons = {
+      indent = {
+        fold_closed = "⯈ ",
+        fold_open = "⯆ ",
+      },
+      folder_closed = "⯈ ",
+      folder_open = "⯆ ",
+      kinds = {
+        Array = "arr ",
+        Boolean = "bool ",
+        Class = "cls ",
+        Constant = "const ",
+        Constructor = "init ",
+        Enum = "enum ",
+        EnumMember = "em ",
+        Event = "ev ",
+        Field = "field ",
+        File = "file ",
+        Function = "fn ",
+        Interface = "I ",
+        Key = "key ",
+        Method = "method ",
+        Module = "module ",
+        Namespace = "ns ",
+        Null = "null ",
+        Number = "num ",
+        Object = "obj ",
+        Operator = "op ",
+        Package = "pack ",
+        Property = "prop ",
+        String = "str ",
+        Struct = "struct ",
+        TypeParameter = "tp ",
+        Variable = "var ",
+      },
+    },
+  },
   cmd = "Trouble",
   keys = {
     {
       "<leader>xx",
       "<cmd>Trouble diagnostics toggle<cr>",
-      desc = "Diagnostics (Trouble)"
+      desc = "Diagnostics (Trouble)",
     },
     {
       "<leader>xX",
       "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-      desc = "Buffer diagnostics (Trouble)"
+      desc = "Buffer diagnostics (Trouble)",
     },
     {
       "<leader>cs",
       "<cmd>Trouble symbols toggle focus=false<cr>",
-      desc = "Symbols (Trouble)"
+      desc = "Symbols (Trouble)",
     },
     {
       "<leader>cl",
       "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-      desc = "LSP Definitions / references (Trouble)"
+      desc = "LSP Definitions / references (Trouble)",
     },
     {
       "<leader>xL",
       "<cmd>Trouble loclist toggle<cr>",
-      desc = "Location List (Trouble)"
+      desc = "Location List (Trouble)",
     },
     {
       "<leader>xQ",
       "<cmd>Trouble qflist toggle<cr>",
-      desc = "Quickfix List (Trouble)"
-    }
+      desc = "Quickfix List (Trouble)",
+    },
   },
 }
