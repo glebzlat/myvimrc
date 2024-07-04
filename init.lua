@@ -40,7 +40,7 @@ require("lazy").setup({
   require("plugin.reach"),
   require("plugin.symbol-outline"),
   require("plugin.which-key"),
-  require("plugin.cyrillic"),
+  -- require("plugin.cyrillic"),
 
   require("plugin.dashboard"),
   require("plugin.hardline"),
