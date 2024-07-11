@@ -1,17 +1,16 @@
 -- Colorscheme saver
 
 local log_levels = vim.log.levels
-local path = require("feature.path")
 
 ---@class ColorschemeSaver
 ---@field colorscheme_file string path to a file with the colorscheme data
 ---@field colorscheme string current colorscheme, read from the colorscheme_file
 ---@field background? string
 local M = {
-  colorscheme_file = path.concat({
-    vim.fn.stdpath("data"),
-    "colorscheme-saver.lua",
-  }),
+  colorscheme_file = table.concat(
+    { vim.fn.stdpath("data"), "colorscheme-saver.lua" },
+    "/"
+  ),
 }
 
 ---@return nil|string, string?

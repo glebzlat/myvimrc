@@ -5,7 +5,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
   },
   config = function()
-    -- servers configurations are placed here
+    -- Language server configurations are in lua/language-servers
     local language_servers = "language-servers"
 
     local map = vim.keymap.set
@@ -21,14 +21,11 @@ return {
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local lsp_flags = { debounce_text_changes = 150 }
 
-    local path = require("mason-core.path")
-    local language_servers_dir =
-      path.concat({ vim.fn.stdpath("config"), "lua", language_servers })
+    -- Load and setup configurations from the lsp_dir
+    local lsp_dir =
+      table.concat({ vim.fn.stdpath("config"), "lua", language_servers }, "/")
     local fnamemodify = vim.fn.fnamemodify
-
-    -- for each file in language_servers_dir:
-    --   load configuration and setup the server
-    for filename in vim.fs.dir(language_servers_dir) do
+    for filename in vim.fs.dir(lsp_dir) do
       local module = language_servers .. "." .. fnamemodify(filename, ":r")
       local server = require(module)
 
