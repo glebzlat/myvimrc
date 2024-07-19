@@ -9,6 +9,8 @@ Licensed under [MIT License](./LICENSE)
 
 ## Features
 
+All the features are located in `lua/feature` directory.
+
 ### Automatic language server configuration loading
 
 Language server configurations are not hardcoded into the `lspconfig` setup
@@ -21,3 +23,11 @@ loaded and configured automatically.
 Change current colorscheme by typing `:Colorscheme <scheme name>`, get current
 scheme name by typing `:Colorscheme`. Colorscheme will be saved and restored on
 next start up.
+
+### Add extra paths to Python LSP
+
+Pylsp does not see the modules installed system-wide or per user, and thus
+does not provide autocompletion, hints, documentation, etc. This feature
+provides single command `:PythonExtraPaths`, which gets all the installation
+paths from `pip` and stores them into cache file. Then this file will be read
+on each LSP startup, adding extra paths to `jedi`.
