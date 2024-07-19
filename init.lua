@@ -38,6 +38,7 @@ require("lazy").setup({
   require("plugin.cmp"),
   require("plugin.neogen"),
   require("plugin.comment"),
+  require("plugin.autopairs"),
 
   require("plugin.telescope"),
   require("plugin.reach"),
