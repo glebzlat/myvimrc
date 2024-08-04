@@ -39,6 +39,8 @@ require("lazy").setup({
   require("plugin.neogen"),
   require("plugin.comment"),
   require("plugin.autopairs"),
+  require("plugin.indent-blankline"),
+  require("plugin.matchup"),
 
   require("plugin.telescope"),
   require("plugin.reach"),
