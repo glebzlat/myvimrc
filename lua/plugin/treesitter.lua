@@ -15,10 +15,12 @@ return {
         "c",
         "python",
         "bash",
-        "ruby",
         "lua",
         "markdown",
         "markdown_inline",
+        "javascript",
+        "typescript",
+        "tsx"
       },
 
       auto_install = false,
