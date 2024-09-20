@@ -1,3 +1,3 @@
 return {
-  "tsserver"
+  "ts_ls"
 }
