@@ -50,6 +50,8 @@ return {
       }
     end
 
+    local prettier = require("formatter.filetypes.javascriptreact").prettier
+
     require("formatter").setup({
       logging = true,
       log_level = vim.log.levels.WARN,
@@ -62,6 +64,10 @@ return {
         c = { clangformat },
 
         java = { clangformat },
+
+        javascript = { prettier },
+        javascriptreact = { prettier },
+        typescriptreact = { prettier },
 
         ["*"] = {
           require("formatter.filetypes.any").remove_trailing_whitespace,
