@@ -1,28 +1,25 @@
-local mason_package_path = require("mason-core.package"):get_install_path()
-local jdtls_dir = mason_package_path .. "/jdtls"
-local jdtls_bin_path = jdtls_dir .. "/bin/jdtls"
+local mason = require("mason-registry")
+local jdtls_path = mason.get_package("jdtls"):get_install_path()
 
-local plugins_dir = jdtls_dir .. "/plugins"
 local launcher_path =
-  vim.fn.glob(plugins_dir .. "/org.eclipse.ecuinox.launcher_*")
+  vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+local lombok_path = jdtls_path .. "/lombok.jar"
 
 local config_dir
 if jit.os == "Linux" then
-  config_dir = "config_linux"
+  config_dir = "linux"
 elseif jit.os == "Windows" then
-  config_dir = "config_win"
+  config_dir = "win"
 elseif jit.os == "OSX" then
-  config_dir = "config_mac"
+  config_dir = "mac"
 end
-config_dir = jdtls_dir .. "/" .. config_dir
+config_dir = jdtls_path .. "/config_" .. config_dir
+
+local project_data_dir = vim.fn.getcwd()
 
 local config = {
   cmd = {
-    jdtls_bin_path,
-    "-jar",
-    launcher_path,
-    "-configuration",
-    config_dir,
+    vim.fn.exepath("java"),
 
     "-Declipse.application=org.eclipse.jdt.ls.core.id1",
     "-Dosgi.bundles.defaultStartLevel=4",
@@ -35,9 +32,29 @@ local config = {
     "java.base/java.util=ALL-UNNAMED",
     "--add-opens",
     "java.base/java.lang=ALL-UNNAMED",
+
+    "-javaagent:" .. lombok_path,
+
+   "-jar",
+    launcher_path,
+    "-configuration",
+    config_dir,
+
+    "-data",
+    project_data_dir,
   },
-  root_dir = vim.fs.dirname(
-    vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]
-  ),
+
+  root_dir = vim.fs.root(0, { ".git", "mvnw", "pom.xml", "gradlew" }),
+
+  settings = {
+    java = {
+      server = { launchMode = "Hybrid" },
+      eclipse = { downloadSources = true },
+      maven = { downloadSources = true },
+    },
+    references = { includeDecompiledSources = true },
+    redhat = { telemetry = { enabled = false } },
+  },
 }
+
 require("jdtls").start_or_attach(config)
