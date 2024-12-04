@@ -40,13 +40,11 @@ require("lazy").setup({
   require("plugin.comment"),
   require("plugin.autopairs"),
   require("plugin.indent-blankline"),
-  require("plugin.matchup"),
 
   require("plugin.telescope"),
   require("plugin.reach"),
   require("plugin.symbol-outline"),
   require("plugin.which-key"),
-  -- require("plugin.cyrillic"),
 
   require("plugin.dashboard"),
   require("plugin.hardline"),
