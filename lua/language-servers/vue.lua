@@ -1,15 +1,15 @@
 local mason = require("mason-registry")
 local util = require("lspconfig.util")
 
-local ts_ls_path =
-  mason.get_package("typescript-language-server"):get_install_path()
+local ok, ts_ls_path = pcall(mason.get_package, "typescript-language-server")
+if not ok then return { "volar" } end
 
 local function get_ts_path(root_dir)
   local global_ts = ts_ls_path .. "/node_modules/typescript/lib"
   local found_ts = ""
 
   local function check_dir(path)
-    found_ts = util.path.join(path, "node_modules", "typescript", "lib")
+    found_ts = table.concat({ path, "node_modules", "typescript", "lib" }, "/")
     if vim.uv.fs_stat(found_ts) then return path end
   end
 
