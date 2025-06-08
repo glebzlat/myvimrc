@@ -9,6 +9,21 @@ if esp_idf_path ~= nil then
     .. "**/xtensa-esp32-elf/bin/xtensa-esp32-elf-*"
 end
 
+local pico_sdk_path = os.getenv("PICO_SDK_PATH")
+if pico_sdk_path ~= nil then
+  local compiler = "arm-none-eabi-gcc"
+  local arm_gcc_exepath = vim.fn.exepath(compiler)
+
+  if arm_gcc_exepath == nil then
+    vim.notify(
+      ("PICO_SDK_PATH is set, but %s is not installed"):format(compiler),
+      vim.log.levels.ERROR
+    )
+  else
+    clang_query_drivers_opt = "--query-driver=" .. arm_gcc_exepath
+  end
+end
+
 return {
   "clangd",
   cmd = {
