@@ -44,6 +44,8 @@ option.lazyredraw = true -- To prevent flicker, i think
 option.synmaxcol = 512 -- Avoid to slow down redrawing for very long lines
 option.ruler = false
 
+vim.g.pyindent_open_paren = option.shiftwidth
+
 vim.g.tagbar_compact = 1
 
 -- 2 spaces for selected filetypes
