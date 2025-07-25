@@ -3,7 +3,8 @@
 It is my own Neovim configuration. It is created (at least, copy-pasted) by
 me for me.
 
-Tested with `Neovim >= v0.9.5`
+The config is only tested on and intended for the latest stable release,
+because some plugins break backward compatibility.
 
 Licensed under [MIT License](./LICENSE)
 
