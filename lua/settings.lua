@@ -90,3 +90,16 @@ vim.g.markdown_fenced_languages = {
 -- for no-desktop environments
 -- setup https://github.com/ms-jpq/isomorphic_copy
 if vim.fn.getenv("DISPLAY") == vim.NIL then vim.fn.setenv("DISPLAY", "FAKE") end
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "term://*toggleterm#*",
+  callback = function()
+    vim.keymap.set("t", "<Esc>", function()
+      vim.api.nvim_feedkeys(
+        vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true),
+        "n",
+        false
+      )
+    end, { buffer = 0, noremap = true })
+  end,
+})
