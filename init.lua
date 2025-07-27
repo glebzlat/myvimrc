@@ -88,3 +88,12 @@ require("lazy").setup({
 
 local cs_saver = require("feature.colorscheme-saver")
 cs_saver.setup()
+
+if vim.version().minor >= 11 then
+  vim.diagnostic.config({
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = true
+  })
+end
