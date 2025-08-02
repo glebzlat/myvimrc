@@ -42,6 +42,10 @@ return {
         { name = "vsnip" },
         { name = "buffer" },
         { name = "path" },
+        {
+          name = "lazydev",
+          group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+        },
       }),
       mapping = cmp.mapping.preset.insert({
         ["<C-n>"] = cmp.mapping.select_next_item(),

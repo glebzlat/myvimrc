@@ -25,7 +25,6 @@ require("lazy").setup({
   { "lewis6991/gitsigns.nvim", tag = "v0.6" },
 
   { "mfussenegger/nvim-jdtls" },
-  { "folke/neodev.nvim", opts = {} },
   { "tpope/vim-sleuth", version = "v2.0" },
 
   require("plugin.mason"),
@@ -40,6 +39,7 @@ require("lazy").setup({
   require("plugin.comment"),
   require("plugin.autopairs"),
   require("plugin.indent-blankline"),
+  require("plugin.lazydev"),
 
   require("plugin.telescope"),
   require("plugin.reach"),
