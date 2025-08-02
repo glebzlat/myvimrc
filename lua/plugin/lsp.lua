@@ -44,8 +44,12 @@ return {
     -- See `:help vim.diagnostic.*` for documentation on any of the below
     -- functions
     map("n", "<leader>e", vim.diagnostic.open_float)
-    map("n", "[d", vim.diagnostic.goto_prev)
-    map("n", "]d", vim.diagnostic.goto_next)
+    map("n", "[d", function()
+      vim.diagnostic.jump({ count = 1, float = true })
+    end)
+    map("n", "]d", function()
+      vim.diagnostic.jump({ count = -1, float = true })
+    end)
     map("n", "<leader>q", vim.diagnostic.setloclist)
 
     -- Use LspAttach autocommand to only map the following keys
