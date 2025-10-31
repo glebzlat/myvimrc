@@ -17,7 +17,17 @@ return {
       { noremap = true, silent = true }
     )
 
-    local lspconfig = require("lspconfig")
+    local function configure_lsp(config_tbl)
+      if vim.fn.has("nvim-0.11") == 1 then
+        vim.lsp.config(config_tbl[1], config_tbl)
+        vim.lsp.enable(config_tbl[1])
+      else
+        local config = require("lspconfig")[config_tbl[1]]
+        if not config["document_config"] then return end
+        config.setup(config_tbl)
+      end
+    end
+
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local lsp_flags = { debounce_text_changes = 150 }
 
@@ -35,9 +45,7 @@ return {
       end
       if not server["flags"] then server["flags"] = lsp_flags end
 
-      local config = lspconfig[server[1]]
-      if not config["document_config"] then return end
-      config.setup(server)
+      configure_lsp(server)
     end
 
     -- Global mappings.
