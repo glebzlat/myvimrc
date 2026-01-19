@@ -40,6 +40,7 @@ require("lazy").setup({
   require("plugin.autopairs"),
   require("plugin.indent-blankline"),
   require("plugin.lazydev"),
+  require("plugin.roslyn"),
 
   require("plugin.telescope"),
   require("plugin.reach"),
