@@ -53,6 +53,8 @@ require("lazy").setup({
 
   require("plugin.toggleterm"),
 
+  { "xiyaowong/transparent.nvim" },
+
   { "NLKNguyen/papercolor-theme", priority = 1000 },
   { "ellisonleao/gruvbox.nvim", priority = 1000 },
   { "Mofiqul/dracula.nvim", priority = 1000 },
